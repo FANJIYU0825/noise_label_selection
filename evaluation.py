@@ -13,6 +13,14 @@ from transformers import (
     AutoTokenizer,
 )
 
+#  login file name 
+logging.basicConfig(
+    
+    format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO,
+    filename='log.txt'
+)
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +104,7 @@ def main():
         model=model,
         eval_data=selfmix_eval_data
     )
-    tester.evaluate()
+    tester.test()
 
 
 if __name__ == "__main__":

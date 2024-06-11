@@ -1,0 +1,7 @@
+{
+    "model_name_or_path": "save_model/bert-selfmix_agnews_repsentive.pt",
+    "pretrained_model_name_or_path": "bert-base-uncased",
+    "eval_file_path": "./data/agnews/agnews_test.csv",
+    "dataset_name": "agnews",
+    "batch_size": 32
+}

@@ -25,7 +25,10 @@ def metric(y_true, y_pred):
         "recall": macro_recall,
         "f1": macro_f1
     }
-    
+def matrix (y_true, y_pred):
+    matri=classification_report(y_true, y_pred, target_names=['World', 'Sports', 'Business', 'Sci/Tech'], output_dict=True)
+    return matri
+       
 def compute_kl_loss(p, q, pad_mask=None):
     
     p_loss = F.kl_div(F.log_softmax(p, dim=-1), F.softmax(q, dim=-1), reduction='none')
@@ -120,7 +123,25 @@ class SelfMixTrainer:
         eval_res = metric(y_true, y_pred)
         logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
             .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
-    
+    def test(self, eval_loader=None):
+        if eval_loader is None:
+            eval_loader = self.eval_data.run("all")        
+        self.model.eval()
+        y_true, y_pred = np.zeros(len(eval_loader.dataset), dtype=int), np.zeros(len(eval_loader.dataset), dtype=int)
+        for j, data in enumerate(eval_loader):
+            val_input_ids, val_att, val_labels, index = [Variable(elem.cuda()) for elem in data]
+            with torch.no_grad():
+                index = index.long().cpu().detach().numpy()
+                pred = self.model(val_input_ids, val_att).argmax(dim=-1).cpu().detach().numpy()
+                val_labels = val_labels.cpu().detach().numpy()
+            y_true[index] = val_labels
+            y_pred[index] = pred
+            
+        eval_res = metric(y_true, y_pred)
+        logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
+            .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
+        eval_matrix = matrix(y_true, y_pred)
+        logger.info(eval_matrix)
     def train(self):
         logger.info("***** Mixup Train *****")       
 
@@ -128,26 +149,21 @@ class SelfMixTrainer:
         eval_loader = self.eval_data.run("all")
         
         for epoch_id in range(1, self.training_args.train_epochs + 1):
-            # prob = self._eval_samples(train_loader)
-            # pred = (prob > self.model_args.p_threshold)
-            prob = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
+            prob = self._eval_samples(train_loader)
+            pred = (prob > self.model_args.p_threshold)
+            # prob = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
             # larger than Median 
             # print('prob ',prob)
-            pred = (prob > 0)
+            # pred = (prob > 0)
+            # unlabel_pred = (prob <0)
             
-            # pred = (prob > self.model_args.p_threshold)
+            # labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob,unlabel_pred )
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
             
-            # 遍历 DataLoader 并打印元素和标签
-            for i, (data_set) in enumerate(labeled_train_loader):
-                print(f"Batch {i}:")
-                print("Data:")
-                print(data_set[i])
-            
-            
-            print('unlabeled_train_loader ',unlabeled_train_loader.dataset)
+          
+                        
             print("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
-            exit()
+            # exit()
             logger.info("***   Train epoch  %d ***", epoch_id)
             self._train_epoch(labeled_train_loader, unlabeled_train_loader)
             
@@ -162,7 +178,7 @@ class SelfMixTrainer:
         
         for batch_idx in range(val_iteration):
             try:
-                inputs_x, inputs_x_att, targets_x, _, _ = next(labeled_train_iter)
+                inputs_x, inputs_x_att, targets_x, _,_ = next(labeled_train_iter)
             except:
                 labeled_train_iter = iter(labeled_train_loader)
                 inputs_x, inputs_x_att, targets_x, _  = next(labeled_train_iter)
@@ -292,7 +308,7 @@ class SelfMixTrainer:
                 similarities = F.cosine_similarity(label_outputs.unsqueeze(0), outputs.unsqueeze(1), dim=2)
                 # soft_max
                 similarities = F.softmax(similarities/0.1, dim=1)
-                print('similarities ',similarities.shape)
+                
                 loss = similarities.cpu().detach().numpy()
                 true_labels = labels.cpu().detach().numpy()
                 # loss  similarites big largest

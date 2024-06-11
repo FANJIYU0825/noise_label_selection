@@ -26,8 +26,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--save_model',action='store_true', default=False)
 parser.add_argument('--save_model_dir', default='./save_model/')
 parser.add_argument('--pretrain_model_dir', default='./pre_train_models')
-parser.add_argument('--train_path', default='./data/train_corrupted.csv')
-parser.add_argument('--test_path', default='./data/test.csv')
+parser.add_argument('--train_path', default='./data/agnews/agnews_train_0.4.csv')
+parser.add_argument('--test_path', default='./data/agnews/agnews_test.csv')
 parser.add_argument('--noise_ratio',type=float,default=0.0)
 parser.add_argument('--noise_type',type=str,default="sym")
 parser.add_argument('--fix_data',type=str,default='1')
@@ -36,7 +36,7 @@ parser.add_argument('--seed',type=int,default=128)
 
 ## args for train
 parser.add_argument('--epoch',type=int,default=6)
-parser.add_argument('--batch_size',type=int,default=32)
+parser.add_argument('--batch_size',type=int,default=4)
 parser.add_argument('--sentence_len',type=int,default=256)
 parser.add_argument('--num_class',type=int,default=10)
 parser.add_argument('--learning_rate',type=float,default=1e-5)
@@ -72,7 +72,7 @@ def setup_seed(seed):
 
 print_args(args)
 setup_seed(args.seed)
-
+# 
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"use gpu device =",os.environ["CUDA_VISIBLE_DEVICES"])
 
 

@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 import torch
-
+import pysnooper
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class DataToDataset(Dataset):
         
     def __len__(self):
         return len(self.labels)
-            
+      
     def __getitem__(self,index):
         return self.texts[index], self.labels[index]
     
@@ -39,7 +39,7 @@ def load_dataset(data_path, dataset_name):
     
 
 class SelfMixDataset(Dataset):
-    def __init__(self, data_args, dataset, tokenizer, mode, pred=[], probability=[]): 
+    def __init__(self, data_args, dataset, tokenizer, mode, pred=[], probability=[],unlabel_prob=None): 
 
         self.data_args = data_args
         self.labels = dataset.labels
@@ -60,7 +60,8 @@ class SelfMixDataset(Dataset):
             self.inputs = [self.inputs[idx] for idx in pred_idx]
             self.labels = self.labels[pred_idx]
             self.pred_idx = pred_idx
-                                          
+            self.prob = [pred[idx] for idx in pred_idx]
+                                       
     def __len__(self):
         return len(self.inputs)
 
@@ -75,10 +76,14 @@ class SelfMixDataset(Dataset):
 
     def __getitem__(self, index):
         text = self.inputs[index]
+        
         input_id, att_mask = self.get_tokenized(text)
         if self.mode == 'labeled':
+            
+            # return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index]
             return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index]
         elif self.mode == 'unlabeled':
+            # return input_id, att_mask, self.pred_idx[index],self.inputs[index],self.labels[index], self.prob[index]
             return input_id, att_mask, self.pred_idx[index]
         elif self.mode == 'all':
             return input_id, att_mask, self.labels[index], index
@@ -90,6 +95,7 @@ class SelfMixData:
         self.datasets = datasets
         self.tokenizer = tokenizer
     
+    # def run(self, mode, pred=[], prob=[],unlabel_prob=None):
     def run(self, mode, pred=[], prob=[]):
         if mode == "all":
             all_dataset = SelfMixDataset(
@@ -123,7 +129,8 @@ class SelfMixData:
                 dataset=self.datasets,
                 tokenizer=self.tokenizer,
                 mode="unlabeled", 
-                pred=pred)              
+                pred=pred,)
+                # unlabel_prob=unlabel_prob)              
             unlabeled_trainloader = DataLoader(
                 dataset=unlabeled_dataset, 
                 batch_size=self.data_args.batch_size_mix,

@@ -17,8 +17,8 @@
     
     "seed": 1,
     "warmup_strategy": "samples",
-    "warmup_samples": 400,
+    "warmup_samples": 5000,
     "train_epochs": 4,
     "grad_acc_steps": 1,
-    "model_save_path": "save_model/bert-selfmix_agnews_repsentive_med.pt"
+    "model_save_path": "save_model/bert-selfmix_agnews_GMM.pt"
 }

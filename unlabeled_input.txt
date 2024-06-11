@@ -1,0 +1,472 @@
+text:S.E.C. Inquiry on Circulation at Newspapers Said to Widen More than six newspaper companies have received letters from the Securities and Exchange Commission seeking information about their circulation practices.
+label:tensor(2)
+probtensor(1)
+text:Pentagon Restores Voting Web Site Access (AP) AP - The Pentagon has restored access to a Web site that assists soldiers and other Americans living overseas in voting, after receiving complaints that its security measures were preventing legitimate voters from using it.
+label:tensor(False)
+probtensor(False)
+text:Administration Shifts On Global Warming A Bush administration report suggests that evidence of global warming has begun to affect animal and plant populations in visible ways, and that rising temperatures in North America are due in part to human activity.
+text:S.E.C. Inquiry on Circulation at Newspapers Said to Widen More than six newspaper companies have received letters from the Securities and Exchange Commission seeking information about their circulation practices.
+label:tensor(2)
+probtensor(False)
+text:Pentagon Restores Voting Web Site Access (AP) AP - The Pentagon has restored access to a Web site that assists soldiers and other Americans living overseas in voting, after receiving complaints that its security measures were preventing legitimate voters from using it.
+label:tensor(1)
+probtensor(False)
+text:Administration Shifts On Global Warming A Bush administration report suggests that evidence of global warming has begun to affect animal and plant populations in visible ways, and that rising temperatures in North America are due in part to human activity.
+label:tensor(1)
+probtensor(False)
+text:Microsoft releases desktop search suite to testers Microsofthas joined the desktop search fray with its release Monday of the beta test version of a suite of tools designed to let users find information stored in their PCs.
+label:tensor(3)
+probtensor(False)
+text:Web Retailers Facing Pre-Holiday Changes (Reuters) Reuters - It's a great time to be an\Internet shopper, but the same search technology that is\transforming the Web into a bargain-hunter's paradise is\putting the squeeze on online retailers doling out discounts\and incentives to lure customers.
+label:tensor(3)
+probtensor(False)
+text:China keeps tight rein on credit China is planning to extend official policies clamping down on credit into 2005, to try to keep the economy from boiling over.
+label:tensor(2)
+probtensor(False)
+text:Cuban M.D. Staying at Argentine Embassy (AP) AP - A prominent Cuban doctor who was denied permission to travel to Buenos Aires to visit relatives was staying at the Argentine Embassy on Thursday, but her son said she does not plan to seek asylum in a case that has raised tensions between the two nations.
+label:tensor(0)
+probtensor(False)
+text:Bush, Kerry Tentatively OK Three Debates NEW YORK - The campaigns of President Bush and Sen. John Kerry tentatively have agreed to a series of three debates that both sides hope will give them momentum in the closing weeks of the presidential election campaign, a person familiar with the debate negotiations said Sunday night...
+label:tensor(1)
+probtensor(False)
+text:Fannie Mae Restatement Up to SEC - COO  WASHINGTON (Reuters) - Whether mortgage finance giant  Fannie Mae &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=FNM.N target=/stocks/quickinfo/fullquote"&gt;FNM.N&lt;/A&gt; will have to restate its earnings as a  result of accounting problems cited by regulators will be up to  the Securities and Exchange Commission to consider, a company  executive said on Tuesday.
+label:tensor(2)
+probtensor(False)
+text:Car Bombs Kill 24, Wound Over 100 in Iraq (AP) AP - Insurgents unleashed a pair of powerful car bombs Monday near the symbol of U.S. authority in Iraq  #151; the Green Zone, where the U.S. Embassy and key government offices are located  #151; and hotels occupied by hundreds of foreigners. Two other explosions brought the day's bombing toll to at least 24 dead and more than 100 wounded.
+label:tensor(2)
+probtensor(False)
+text:More BA flights cancelled British Airways passengers at Heathrow Airport have suffered further travel disruption with two more flights cancelled due to  quot;technical quot; problems.
+label:tensor(0)
+probtensor(False)
+text:Mitsubishi may partner with Merrill Mitsubishi Motors Corp, Japan #39;s only money-losing car maker, and US brokerage firm Merrill Lynch plan to set up a joint venture in North America, the Nihon Keizai Shimbun said Saturday.
+label:tensor(1)
+probtensor(False)
+text:Steelers RB Bettis thinking about retiring after season Pittsburgh Steelers running back Jerome Bettis hasn #39;t decided if he will retire after this season, but is thinking about it. Bettis said his health -- not whether the Steelers win the Super 
+label:tensor(1)
+probtensor(False)
+text:US PUSHES FORWARD ON PALESTINIAN VOTE US Secretary of State Colin Powell has arrived in Israel determined to press both Israeli and Palestinian leaders for a process to enable Palestinians to elect a successor to Yasser Arafat.
+label:tensor(0)
+probtensor(False)
+text:Oil: Price surges 3 per cent as US heating stocks fall NEW YORK - Oil prices recovered from seven-week lows on Wednesday, surging more than 3 per cent as a drawdown in US heating fuel stocks rekindled worries about thin supplies ahead of the northern winter.
+label:tensor(1)
+probtensor(False)
+text:Firefox catches fire As the number of downloads of Mozilla Foundation #39;s open source browser Firefox 1.0 continues to soar (4.7 hits by Nov. 19), people are asking what will established browsers do in response?
+label:tensor(1)
+probtensor(False)
+text:Report: SBC Sets TV Deal with Microsoft (Reuters) Reuters - SBC Communications, the No. 2 U.S.\telecommunications company, has agreed to pay  #36;400 million to\Microsoft Corp. for software that can deliver television via\high-speed data lines, The New York Times reported on\Wednesday.
+label:tensor(3)
+probtensor(False)
+text:US hostage wife pleads for mercy BBC, London, September 19: The wife of an American taken hostage with two others in Baghdad has appealed on television for their release.
+label:tensor(0)
+probtensor(False)
+text:Intel joins McCaw #39;s new tech venture On the day Craig McCaw #39;s old company, AT amp;T Wireless, came one step closer to being absorbed by Cingular Wireless, the cellphone pioneer announced that his latest venture, Clearwire, has formed a high-profile partnership with Intel.
+label:tensor(3)
+probtensor(False)
+text:China #39;s GDP to grow 9 percent: state commission China #39;s economy was expected to grow by about nine percent this year, a senior official with the State Development and Reform Commission was quoted as saying by the Beijing News on Saturday.
+label:tensor(1)
+probtensor(False)
+text:IMF Sees Robust U.S. Growth (Reuters) Reuters - Robust U.S. economic growth will\likely continue into 2005, but authorities should cut the\budget deficit to reduce the risk to growth, International\Monetary Fund Managing Director Rodrigo Rato said.
+label:tensor(1)
+probtensor(False)
+text:Sandwich gymnasts off to fast start In its first meet in the program's history, the Sandwich girls' gymnastics team proved to be quick learners, defeating Carver, 130 3/4-105.
+label:tensor(1)
+probtensor(False)
+text:India Suggests Greater Autonomy for Kashmir  NEW DELHI, Nov. 25 -- India said on Thursday that it could consider giving a large amount of autonomy to the disputed region of Kashmir to help make peace with Pakistan but was not willing to redraw its borders to settle a half-century of enmity.
+label:tensor(1)
+probtensor(False)
+text:Judge Blocks MPAA #39;s Mass Suits A week after members of the Motion Picture Association of America filed 11 lawsuits against hundreds of people they accused of using file-sharing networks to share copies of movies, a US District Court judge found the process improper and ordered the 
+label:tensor(1)
+probtensor(False)
+text:Before-the-Bell: Wal-Mart Edges Lower  NEW YORK (Reuters) - Shares of Wal-Mart Stores Inc. &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=WMT.N target=/stocks/quickinfo/fullquote"&gt;WMT.N&lt;/A&gt;  ticked lower on Monday after the world's largest retailer cut  its August sales forecast.
+label:tensor(2)
+probtensor(False)
+text:MOTOGP NEWS Moody Blues: Rossi, Gibernau and Formula One. In the latest of his exclusive columns for Crash.net, renowned Eurosport MotoGP commentator Toby Moody provides the latest behind the scenes news from Sepang, analyses the Valentino Rossi/Sete Gibernau championship battle and ponders just how committed 
+label:tensor(1)
+probtensor(False)
+text:Newmont Considers Suit Over Jailed Execs (AP) AP - Newmont Mining Co. officials said Wednesday they are considering a lawsuit against Indonesian police over the jailing of five company executives during a pollution investigation.
+label:tensor(1)
+probtensor(False)
+text:The eternal circle of the Iraqi insurgency In all likelihood, US troops and the nascent Iraqi military will storm the rebel city of Fallujah in the very near future. The so-called  quot;City of Mosques quot; has been under sustained air assault 
+label:tensor(1)
+probtensor(False)
+text:Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market.
+label:tensor(1)
+probtensor(False)
+text:Davenport remains on title streak Top-seeded Lindsay Davenport claimed her fourth consecutive championship on Sunday with a 6-3, 6-2 victory over second-seeded Vera Zvonareva in the Western and Southern Women #39;s Open in Mason, Ohio.
+label:tensor(1)
+probtensor(False)
+text:Philips Posts Best Quarterly Results in Four Years Often pigeonholed as just a seller of televisions and DVD players, Royal Philips Electronics said Tuesday that its third-quarter profit surged despite 
+label:tensor(2)
+probtensor(False)
+text:Hamas leader killed in Syria, official says A Hamas leader was killed Sunday when a car exploded in Damascus, Syria, an official of the Palestinian militant group told CNN. It was not clear whether the explosion that killed Izz al-Din al-Sheikh 
+label:tensor(1)
+probtensor(False)
+text:Mixed Signals Sustain Rally Stocks edged up for the week, continuing a month-long rally in the face of mediocre economic news and more-positive developments from technology firms and energy markets.
+label:tensor(2)
+probtensor(False)
+text:Google hails adwords victory A district judge has ruled that Google can continue selling advertising triggered by searches for trademarked brand names. Judge Leonie Brinkema ruled that the adwords program does not violate US federal trademark laws.
+label:tensor(1)
+probtensor(False)
+text:Transsexual drives off to score a first on the golf course Golf is not a sport renowned for being at ease with gender issues. Many of the game #39;s great clubs refuse to admit women, and the occasional inclusion of women in men #39;s professional tournaments has caused consternation from Arran to Augusta.
+label:tensor(1)
+probtensor(False)
+text:Amex sees \$120M charge; axes 2,000 American Express said Friday it expects to record a fourth-quarter pre-tax restructuring charge of up to \$120 million and cut 2,000 jobs.
+label:tensor(1)
+probtensor(False)
+text:Official: Yukos Sale Won't Impact Output (AP) AP - The planned sale of oil giant Yukos' main pumping unit to pay off the parent company's back taxes won't affect production, Russia's energy minister was quoted Tuesday in news reports.
+label:tensor(1)
+probtensor(False)
+text:Colombia destroys stockpiled land mines COLOMBIA: In eight thunderous explosions, Colombia blew up its remaining 6,800 stockpiled land mines, winning the praise of Jordans visiting Queen Noor who said the move took courage given that the nation is still fighting an internal conflict.
+label:tensor(1)
+probtensor(False)
+text:Update 6: Winter Fuel Supply Worries Continue on Data Concerns about winter fuel supplies were heightened Wednesday after a report showed US inventories of distillate, which includes heating oil, shrank for the sixth straight week.
+label:tensor(1)
+probtensor(False)
+text:NFL 2004: Garcia a Good Fit for Browns (AP) AP - Check out any sporting goods store around town and you'll find them cluttering the clearance racks: brown, white and orange No. 2 jerseys  #151; in any size.
+label:tensor(1)
+probtensor(False)
+text:Alarcon backs suit against DWP rate hike Stepping up his legal and political battle, state Sen. Richard Alarcon endorsed a class-action lawsuit filed Thursday that challenges the 11 percent water-rate increase the Department of Water and Power imposed this year.
+label:tensor(1)
+probtensor(False)
+text:Militants reportedly promise to free kidnapped Western journalist Garen BAGHDAD, Iraq (AP) A top aide to firebrand Shiite cleric Muqtada al-Sadr, who appealed to kidnappers to free a Western journalist, said Friday they had promised to release him. 
+label:tensor(1)
+probtensor(False)
+text:Spot On: Dragon Quest VIII fever hits Japan A years-long phenomenon continues as crowds gather to buy the latest installment of Square Enix #39;s RPG series. TOKYO--When it comes to the popularity of video games in Japan, one of the franchises that can #39;t 
+label:tensor(1)
+probtensor(False)
+text:Top Hamas Militant Killed in Israeli Missile Strike  GAZA (Reuters) - A senior leader of Hamas's military wing  was killed in an Israeli missile strike on his car in the Gaza  Strip, Palestinian witnesses said.
+label:tensor(0)
+probtensor(False)
+text:Video game launch on way Video game buffs unite: The XBox game  quot;Halo 2, quot; a sequel to Microsoft #39;s best-selling game ever, will be released in a show of local fanfare just after midnight Tuesday morning.
+label:tensor(1)
+probtensor(False)
+text:Powerful drug kingpin extradited to US Drug kingpin Gilberto Rodriguez Orejuela, wearing handcuffs and a bulletproof vest, flew late Friday aboard US government plane for trial in the United States, becoming the most powerful Colombian trafficker to ever be extradited 
+label:tensor(0)
+probtensor(False)
+text:Italian hostages released There was widespread rejoicing on Tuesday night in Italy at the release of two Italian female aid workers who had been held hostage in Iraq.
+label:tensor(0)
+probtensor(False)
+text:2 Firms Win Contracts for Missile Work BAE Systems PLC  and Northrop Grumman Corp. won \$45 million contracts yesterday to develop prototypes of anti-missile technology that could protect commercial aircraft from shoulder-fired missiles.
+label:tensor(3)
+probtensor(False)
+text:NVIDIA and Sony hook-up Electronic voting in the US. The saga continues. Here is an interesting comparision with a Venezuelan referendum.  quot;80 of Americans could correctly name the first President Bush #39;s pet dog Millie, but only 
+label:tensor(1)
+probtensor(False)
+text:Temasek posts S\$7.4b net profit in first-ever report card SINGAPORE : Investment firm Temasek Holdings has made public its report card for the first time in its 30-year history. Its performance in financial year 2003 sparkled, with 
+label:tensor(1)
+probtensor(False)
+text:Asian Stocks Jittery on Record Oil (Reuters) Reuters - Asian shares stuck to narrow ranges\Friday as record oil prices supported energy stocks and miners\rebounded on steadier metals markets, countering worries about\technology earnings and falls in Japanese automakers.
+label:tensor(1)
+probtensor(False)
+text:Mount St. Helens Releasing Steam After Days of Quakes After a week of gentle rumblings, Mount St. Helens broke open today with a small eruption shortly after noon Pacific time, tossing up a plume of ash and smoke.
+label:tensor(1)
+probtensor(False)
+text:Wild Oats, Pathmark Warn on Results  NEW YORK (Reuters) - Natural and organic foods retailer  Wild Oats Markets Inc. &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=OATS.O target=/stocks/quickinfo/fullquote"&gt;OATS.O&lt;/A&gt; and Pathmark Stores Inc.  &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=PTMK.O target=/stocks/quickinfo/fullquote"&gt;PTMK.O&lt;/A&gt; both warned on Monday that their full-year results  would miss Wall Street forecasts because profit margins were  being squeezed by aggressive price cuts.
+label:tensor(3)
+probtensor(False)
+text:Texas Tech Gives Nebraska Worst Loss Ever (AP) AP - Texas Tech handed Nebraska its worst lost in the Cornhuskers' storied 114-year history, with Sonny Cumbie throwing for 436 yards and five touchdowns in the Red Raiders' 70-10 victory Saturday night.
+label:tensor(1)
+probtensor(False)
+text:Dell Cuts Prices on Many U.S. Corporate Products  SAN FRANCISCO (Reuters) - Dell Inc. &lt;A HREF="http://www.reuters.co.uk/financeQuoteLookup.jhtml?ticker=DELL.O qtype=sym infotype=info qcat=news"&gt;DELL.O&lt;/A&gt; on Monday said  it had cut prices by as much as fifth for a range of products  aimed at U.S. corporate customers, as the computer maker passed  along savings from cheaper components.
+label:tensor(2)
+probtensor(False)
+text:Formula One stars arrive in Shanghai SHANGHAI (AP-CP) - World champion Michael Schumacher arrived in Shanghai on Wednesday, along with a host of other Formula One stars, saying he looked forward to evaluating the challenges of the city #39;s brand new circuit.
+label:tensor(1)
+probtensor(False)
+text:Sony Unveils New MP3 Hard Disk Walkman Sony Corp. announced Tuesday a new 20 gigabyte digital music player with MP3 support that will be available in Great Britain and Japan before Christmas and elsewhere in Europe in early 2005.
+label:tensor(1)
+probtensor(False)
+text:Ameren Seeks to Slash Workforce ST. LOUIS - Utility holding company Ameren Corp. announced plans Wednesday to reduce its payroll by offering 950 union and management employees financial incentives to leave.
+label:tensor(2)
+probtensor(False)
+text:Merck guides to lower-than-expected 2005 earnings NEW YORK, December 8 (newratings.com) - Merck  amp; Co (MRK.NYS) has guided to lower-than-expected 2005 earnings due to the withdrawal of its blockbuster arthritis drug, Vioxx, and increased generic competition for its cholesterol drug, Zocor.
+label:tensor(2)
+probtensor(False)
+text:Arrivederci Roma for Voeller after 26 days ROME - Another week, another European soccer coach gone. Roma #39;s Rudi Voeller became the latest coaching casualty, handing in his resignation after the club #39;s 1-3 away defeat by nine-man Bologna on Saturday.
+label:tensor(1)
+probtensor(False)
+text:Apple #39;s iTunes now accepting PayPal Customers at Apple Computer #39;s iTunes store will now be able to pay for their songs, albums and gift certificates using PayPal, a virtual wallet technology owned by eBay.
+label:tensor(1)
+probtensor(False)
+text:Taiwan claims first two taekwondo golds Athens, Greece (Sports Network) - The first taekwondo medals of the Athens Games were awarded Thursday night in the men #39;s and women #39;s flyweight division, and Taiwan captured both golds.
+label:tensor(1)
+probtensor(False)
+text:Stocks Down Slightly; Economic Data Mixed  NEW YORK (Reuters) - U.S. stocks ended slightly lower on  Friday as a higher-than-expected jump in U.S. producer prices  helped to offset a fall in oil prices and dividend hikes from  General Electric Co. &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=GE.N target=/stocks/quickinfo/fullquote"&gt;GE.N&lt;/A&gt; and SBC Communications &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=SBC.N target=/stocks/quickinfo/fullquote"&gt;SBC.N&lt;/A&gt;.
+label:tensor(3)
+probtensor(False)
+text:Armed militia raises concern for refugees returning to Darfur (Canadian Press) Canadian Press - GENEINA, Sudan (CP) - Armed militiamen surged into a western border area where some Darfur refugees attempted to return to their raided village, United Nations security officials said Sunday, raising further concern about how quickly 1.4 million displaced Sudanese could return home safely.
+label:tensor(0)
+probtensor(False)
+text:Chechen charged over siege RUSSIAN prosecutors charged a Chechen man with terrorism and murder in connection with the deadly hostage-taking at a school in southern Russia, the Interfax news agency reported today.
+label:tensor(0)
+probtensor(False)
+text:Apple posts highest Q4 revenue in almost a decade Apple Computer's iPod music player helped the company increase revenue at a dizzying rate, leading to its highest fourth-quarter revenue in nine years.
+label:tensor(1)
+probtensor(False)
+text:Russia 'impeded media' in Beslan The OSCE condemns Russia's handling of the media during the bloody Beslan school siege.
+label:tensor(0)
+probtensor(False)
+text:WORLD BRIEFS IN AFGHANISTAN. US troops and helicopter gunships killed 22 militants, including three Arab fighters, in the southern province of Zabul, Afghanistan, the military said yesterday.
+label:tensor(0)
+probtensor(False)
+text:Tennis: Ljubicic powers past Johansson in Madrid Masters MADRID : Croatia #39;s Ivan Ljubicic battered Joachim Johansson with 27 aces, upsetting the big-hitting seventh seed 7-6 (7/2), 6-7 (1/7), 7-6 (7/3) for a place in the semi-finals of the 2.425-million-euro Madrid Masters.
+label:tensor(2)
+probtensor(False)
+text:Cricket-Pakistan get first crack at Aussie Test bat PERTH, Australia (AFP) - The Pakistan pace duo of Shoaib Akhtar and Mohammad Sami will get their first crack at an Australian Test batsman so far on this tour when they take on a Chairman #39;s XI captained by Justin Langer in a limited overs match here.
+label:tensor(1)
+probtensor(False)
+text:India tests missile before talks India test-launched an Agni II surface-to-surface missile capable of carrying nuclear weapons yesterday. The trial, on the testing range on Wheeler Island off eastern Orissa state, was the third trial of the 
+label:tensor(1)
+probtensor(False)
+text:As Sadr City calms, sanitation projects loom Residents of the Sadr City slum in western Baghdad on Tuesday said they hoped an unofficial truce between a Shiite Muslim militia and US and Iraqi government 
+label:tensor(1)
+probtensor(False)
+text:BA sees profits more than double Airline British Airways reveals pre-tax profits more than doubled to 220m in the July to September period.
+label:tensor(2)
+probtensor(False)
+text:Wilkinson to raise the bar Sir Clive Woodward yesterday joined the chorus of acclaim that greeted Jonny Wilkinson #39;s return to action on Tuesday night after eight months on the sidelines with a neck injury. 
+label:tensor(1)
+probtensor(False)
+text:The Dorms May Be Great, but How's the Counseling? Given the prevalence of emotional difficulties on campus, it pays to find out, before choosing a college, what mental health services are available.
+label:tensor(3)
+probtensor(False)
+text:Royal Bank serves up disappointing quarter TORONTO - Royal Bank of Canada has reported a drop in third-quarter profit --the first year-over-year decline in three years -- because of lower earnings at its US division, increased costs and a higher Canadian dollar.
+label:tensor(1)
+probtensor(False)
+text:No bilateral talks during Aziz #39;s visit India is unlikely to respond to any major bilateral issues during Pakistan Prime Minister Shaukat Aziz #39;s two-day visit to New Delhi starting Tuesday.
+label:tensor(0)
+probtensor(False)
+text:Salesforce.com unveils Winter '05 at user conference SAN FRANCISCO -- At the Dreamforce 2004 Salesforce.com user conference on Monday, the company that says "just say no to packaged applications" continued to expand on its strategy of tightly integrating its hosted solution with in-house enterprise applications.
+label:tensor(2)
+probtensor(False)
+text:Jeter Is Having Fun When the Games Mean the Most Javier Vazquez reversed his free fall with seven three-hit innings and Derek Jeter went 3 for 4 in the Yankees' second straight shutout victory.
+label:tensor(1)
+probtensor(False)
+text:Indian PM Singh: Peace Talks With Pakistan Making Progress Indian Prime Minister Manmohan Singh says his nation is working toward a  quot;mutually acceptable solution quot; to all outstanding issues with Pakistan, including disputed Kashmir.
+label:tensor(0)
+probtensor(False)
+text:Google can now take you inside seven great libraries This is welcome news for researchers as their favorite web search engine Google will now scan the entire collections of seven prestigious libraries and make these pages available to Google users.
+label:tensor(3)
+probtensor(False)
+text:Another day without practice for Phil BLOOMFIELD HILLS, Mich. -- Phil Mickelson skipped a practice for the second straight day on Thursday, 24 hours before the Ryder Cup gets under way at Oakland Hills.
+label:tensor(1)
+probtensor(False)
+text:Chelsea and CSKA win, ousted coach Ranieri loses PARIS: Chelsea beat Porto, Barcelona blew away Shakhtar Donetsk and AC Milan struck twice in the last two minutes to sink Celtic but Russian billionaire Roman Abramovich was the biggest winner of them all.
+label:tensor(1)
+probtensor(False)
+text:Romanian killer bear had rabies The authorities in Brasov, central Romania, declare a rabies alert after an infected bear kills a man and injures others.
+label:tensor(0)
+probtensor(False)
+text:Nelson tops Irwin for playoff win Spring, TX (Sports Network) - Larry Nelson fired an eight-under 64 Sunday and birdied the first playoff hole to win the inaugural Adminstaff Small Business Classic.
+label:tensor(1)
+probtensor(False)
+text:A Wedding That Won't Leave You Broke If you're planning a spring or summer wedding, you're probably sweating the details now.
+label:tensor(2)
+probtensor(False)
+text:IBM  #39;Blue Gene #39; Supercomputer Goes on Sale IBM #39;s record-trouncing Blue Gene supercomputer will now be available with commercial configurations ranging from one-to-64 racks.
+label:tensor(1)
+probtensor(False)
+text:Pioneering NASA Engineer Max Faget Dead at 83 Pioneering NASA engineer Maxime Faget, who designed the Project Mercury capsule that carried the first US astronauts into space and worked on every subsequent manned spacecraft including the space shuttle, has died at the age of 83 
+label:tensor(1)
+probtensor(False)
+text:Linux #39;s Latest Moneymaker NEW YORK - A Salt Lake City startup called Linux Networx has just closed a second round of venture funding for a staggering \$40 million, further proof of investors #39; appetite for Linux as a solid, high-growth alternative to Windows and Unix.
+label:tensor(1)
+probtensor(False)
+text:Fed chief shakes markets Federal Reserve Chairman Alan Greenspan shook financial markets yesterday with a warning that foreign nations may tire of financing the huge US trade and budget deficits.
+label:tensor(2)
+probtensor(False)
+text:Wash. Governor's Race Forced Into Recount (AP) AP - The closest governor's race in Washington history was forced into a recount Wednesday as counties finished tallying the ballots and found only a few votes separating the candidates out of 2.8 million cast.
+label:tensor(1)
+probtensor(False)
+text:Redskins Top Giants, Break Losing Streak (AP) AP - Stop the game and have a parade  #151; the Washington Redskins finally scored 20 points. The historic moment occurred with 41 seconds left in the first half of Sunday's rout of the New York Giants, when tight end Robert Royal went to the ground to cradle Patrick Ramsey's 9-yard pass. Royal's first career touchdown gave the Redskins a 21-0 lead on the way to a 31-7 victory.
+label:tensor(2)
+probtensor(False)
+text:NatFoods makes its pitch for SPC PERENNIAL takeover target and suitor National Foods has identified SPC Ardmona as a merger partner in a deal that would add packaged fruit to its own dairy operations and build a major Australian food company.
+label:tensor(1)
+probtensor(False)
+text:ING to sell Baring Asset Management Financial group ING has agreed to sell Baring Asset Management to US groups MassMutual and Northern Trust and says it will make a net gain of 250 million euros (176 million pounds) on the deal.
+label:tensor(1)
+probtensor(False)
+text:Your Verdict: Diouf spitting shame El-Hadji Diouf is back doing what he appears to do best - spitting on people. Not content with covering a variety of fans with spittle he has now targeted his fellow professionals.
+label:tensor(1)
+probtensor(False)
+text:Agent: Smith's Appeal to Be Heard Wed. (AP) AP - The NFL will hear Minnesota Vikings running back Onterrio Smith's appeal of a pending four-game suspension next week.
+label:tensor(1)
+probtensor(False)
+text:Microsoft email  #39;caller ID #39; questioned Internet engineers working on a standard for identifying the source of email messages voted down a proposal by Microsoft to include some of that company #39;s intellectual property in the specification.
+label:tensor(1)
+probtensor(False)
+text:Leader Offers Fresh Election For Ukrainians Government unity seemed to crumble as the president proposed a new election and the Supreme Court heard complaints of fraud.
+label:tensor(0)
+probtensor(False)
+text:LIONS MUST DO WITHOUT JONES Detroit Lions rookie running back Kevin Jones will be sidelined at least two weeks with a high right ankle sprain. Since the Lions have a bye this weekend, coach Steve Mariucci is hoping that Jones will just miss the October 10 game at Atlanta.
+label:tensor(1)
+probtensor(False)
+text:Dollar Stalls Ahead of Employment Figures (Reuters) Reuters - The dollar was stuck in familiar ranges\on Wednesday as the market awaited U.S. employment figures,\while the yen came under pressure from another round of soaring\oil prices.
+label:tensor(1)
+probtensor(False)
+text:SuperGen Withdraws Drug Application  NEW YORK (Reuters) - SuperGen Inc. &lt;A HREF="http://www.investor.reuters.com/FullQuote.aspx?ticker=SUPG.O target=/stocks/quickinfo/fullquote"&gt;SUPG.O&lt;/A&gt; on Monday said  it has withdrawn an application to market its pancreatic cancer  drug in the United States, casting a cloud on the drug's future  in the world's biggest market and sending the company's shares  down as much as 16 percent.
+label:tensor(3)
+probtensor(False)
+text:Surviving Haitians pray for 1,500 killed by Jeanne; more The general in charge of UN peacekeepers in Haiti is critical of the slow pace of aid getting to hungry and sick residents, many left homeless by flooding.
+label:tensor(0)
+probtensor(False)
+text:Blair Delivers Crucial Party Speech Under Iraq Cloud  BRIGHTON, England (Reuters) - Britain's Tony Blair faces  one of the trickiest speeches of his career on Tuesday, seeking  to win back his Labour Party after rifts over Iraq and spell  out new policies to set up next year's re-election bid.
+label:tensor(1)
+probtensor(False)
+text:England: Balckburn still in last Blackburn recovered from 3-1 down to draw 3-3 with Birmingham in the English Premier League on Sunday, but stayed bottom of the standings.
+label:tensor(1)
+probtensor(False)
+text:Warner named Giants #39; starter New York Giants Coach Tom Coughlin Sunday named Kurt Warner the team #39;s starting quarterback for the season opener at Philadelphia Sept.
+label:tensor(1)
+probtensor(False)
+text:England can run away with it Owen Hargreaves will probably be the beneficiary of David Beckham #39;s moment of madness if Sven-Goran Eriksson decides to retain his bold three-man attack for Wednesday #39;s match in Azerbaijan.
+label:tensor(1)
+probtensor(False)
+text:Next Space Station Launch Set for Oct 11 The blast-off in a Soyuz spacecraft from Russia #39;s Baikonur cosmodrome in Kazakhstan will deploy a replacement crew for Russian cosmonaut Gennady Padalka and NASA astronaut Michael Fincke, who have manned the orbital platform since April.
+label:tensor(1)
+probtensor(False)
+text:Weis Finds New Home With Notre Dame While hes spent the past several seasons in New England winning two Superbowl championships and looks poised to a third, Weis may have hoped that success would have lead to an NFL head coaching job.
+label:tensor(1)
+probtensor(False)
+text:G7 states to write off \$33 billion Iraqi debt BERLIN: The United States, Germany and other G7 nations agreed yesterday to write off up to 80 per cent or \$33 billion of Iraq #39;s Paris Club debt, which could pave the way for a wider international accord, officials said.
+label:tensor(0)
+probtensor(False)
+text:NASA to Track Odd Explosions NASA plans to launch a new space telescope later this month capable of spinning around at a moment #39;s notice to catch sight of the elusive, brief and powerful explosions that send blasts of light and radiation screaming through our universe every day.
+label:tensor(1)
+probtensor(False)
+text:Colgate to cut work force, India may emerge hub The US-based oral care and personal products company Colgate-Palmolive Company is drawing a blueprint to restructure its operations.
+label:tensor(2)
+probtensor(False)
+text:AFGHAN OPIUM GROWING UP TWO THIRDS Opium cultivation in Afghanistan leapt by two-thirds this year, according to a new UN report that warns the countrys economy could be forced to rely on poppy growing largely wiped out under the hardline Taliban militia.
+label:tensor(1)
+probtensor(False)
+text:U.S. Treasury Prices Are Mixed  NEW YORK (Reuters) - U.S. Treasury prices were mixed on  Wednesday as economic data proved tepid and demand for an  auction of two-year notes was thin.
+label:tensor(1)
+probtensor(False)
+text:IMAX's Stocking Stuffer The company ups its 2004 guidance after the record-breaking success of Polar Express.
+label:tensor(2)
+probtensor(False)
+text:UK ; Last Rites Sounded for Life-Changing Video Format  quot;We are now entering the digital age and the new DVD technology available represents a step-change in picture quality and convenience, quot; said marketing director John Mewett.
+label:tensor(1)
+probtensor(False)
+text:Astros Pinning Hopes on Untested Pitcher Houston put their hopes in a pitcher untested in the postseason when they give Pete Munro the ball to start Game 2 of the N.L. Championship Series tonight.
+label:tensor(1)
+probtensor(False)
+text:Oil Extends Retreat Ahead of U.S. Data  LONDON (Reuters) - Oil prices extended recent heavy losses  on Wednesday ahead of weekly U.S. data expected to show fuel  stocks rising in time for peak winter demand.
+label:tensor(1)
+probtensor(False)
+text:Red Sox primed for encore When you #39;re part of a team that has just captured its first World Series title in 86 years, it #39;s easy to get a little too caught up in the moment.
+label:tensor(1)
+probtensor(False)
+text:Saturian Titian Flyby But Hours Away The Cassini spacecraft is but hours away from a second flyby of the Saturian moon Titan set for Monday , December 13 with the closest approach image data arriving at about 8 PM.
+label:tensor(1)
+probtensor(False)
+text:Thinnest iMac Ever Makes Paris Debut  quot;A lot of people are going to ask,  #39;Where did the computer go? #39; quot; says Phil Schiller, Apple #39;s senior vice president of worldwide product marketing.
+label:tensor(1)
+probtensor(False)
+text:Mississippi St. placed on four years #39; probation Mississippi State #39;s football program was placed on four years probation, stripped of four scholarships during each of the next two seasons and banned from postseason play this year by 
+label:tensor(1)
+probtensor(False)
+text:At least four Georgian soldiers killed in separatist region clashes (AFP) AFP - At least four Georgian soldiers were killed and five wounded in overnight clashes in Georgia's separatist, pro-Russian region of South Ossetia, Georgian officers near the frontline with Ossetian forces said early Thursday.
+label:tensor(0)
+probtensor(False)
+text:Arson eyed at Dutch mosque THE HAGUE -- A mosque in the Netherlands' southeast was destroyed by fire yesterday in what seemed to be the latest suspected attack against an Islamic site since the killing of a Dutch filmmaker critical of Islamic fundamentalism.
+label:tensor(1)
+probtensor(False)
+text:Hamm Admits He Will Be Shocked if He Loses Gold  LONDON (Reuters) - Olympic all-round champion Paul Hamm  admitted he would be stunned if he lost the gold medal he was  awarded in Athens following a judging error.
+label:tensor(1)
+probtensor(False)
+text:Starting rotation might get a makeover for next round LOS ANGELES -The outcome of Sunday night #39;s Game 4 against the Los Angeles Dodgers had little bearing on the Cardinals #39; thinking about their NLCS starting rotation.
+label:tensor(1)
+probtensor(False)
+text:Dollar hits new low, then hits back The dollar hit a record low against the euro for a fourth day running on Friday but rebounded swiftly as traders grew nervous about the possibility of central bank intervention.
+label:tensor(2)
+probtensor(False)
+text:Things don #39;t go better as Coke #39;s profit warning weighs Dow A PROFIT warning from Coca-Cola put the skids under US equities yesterday and a Goldman Sachs survey showing softening corporate spending on technology added to the gloomy mood.
+label:tensor(1)
+probtensor(False)
+text:XM Radio Shares Jump on Online Service Shares of XM Satellite Radio Holdings Inc. jumped to a new 52-week high Thursday, a day after the company said it would begin broadcasting its commercial-free radio stations to subscribers over the Internet.
+label:tensor(1)
+probtensor(False)
+text:HDTV: A Shopper #39;s Survival Guide The words high-definition TV are enough to give many consumers the sweats. We #39;ll help you relax and buy smarter. Flat or fat? EDTV or HDTV?
+label:tensor(1)
+probtensor(False)
+text:Porcher doesn #39;t mind not playing considering the circumstances Detroit Lions defensive end Robert Porcher understood why he was benched in Sunday #39;s 20-16 victory against the Chicago Bears, but he might need even more patience before this season is over.
+label:tensor(1)
+probtensor(False)
+text:Don't Mess With Librarians The timid media won't do it, so 'radical' librarians are standing up against the government to protect free speech and fight censorship. Commentary by Adam L. Penenberg.
+label:tensor(1)
+probtensor(False)
+text:Europe Mission to Moon Called Success (AP) AP - A small spacecraft has made it into lunar orbit, signaling Europe's first successful mission to the moon and paving the way for the craft to be used to study the lunar surface, a European Space Agency spokesman said Tuesday.
+label:tensor(1)
+probtensor(False)
+text:Puyallup #39;s Moore takes US Amateur Ryan Moore of Puyallup capped one of the greatest individual summers of amateur golf in the sport #39;s history yesterday by coming from behind to win the US Amateur.
+label:tensor(1)
+probtensor(False)
+text:Loreto pilgrimage concludes as Pope beatifies 3 Loreto, Sep. 06 (CWNews.com) - Pope John Paul II (bio - news) traveled to the Marian shrine at Loreto, Italy, on September 5, where he presided at the beatification of three members of Catholic Action.
+label:tensor(0)
+probtensor(False)
+text:Symantec Will Buy Veritas for \$13.5 Billion in Stock (Update4) Symantec Corp., the world #39;s largest maker of anti-virus programs for computers, agreed to buy Veritas Software Corp. for \$13.5 billion, the biggest software purchase in six years.
+label:tensor(2)
+probtensor(False)
+text:Divorce rate surges as friends are reunited Internet sites such as Friends Reunited are unwittingly fuelling a surge in marital break-up as bored husbands and wives contact old flames, relationship counsellors warned yesterday as official figures showed divorce has reached a seven-year high.
+label:tensor(1)
+probtensor(False)
+text:GUS says Argos outperforms Retail group GUS says like-for-like sales at its key Argos chain outstripped the market in the first half as sales of consumer electronics and leisure goods shone.
+label:tensor(1)
+probtensor(False)
+text:Lawmakers seek to mandate Dutch-trained Muslim clerics THE HAGUE -- The Dutch parliament asked the government yesterday to draft legislation compelling mosques to employ only imams who have studied Islamic religion in the Netherlands.
+label:tensor(0)
+probtensor(False)
+text:Record Labels Said to Be Next on Spitzer List for Scrutiny New York's attorney general is said to be scrutinizing practices for influencing which songs are heard on radio.
+label:tensor(0)
+probtensor(False)
+text:The art of safe storm-chasing A mid Wales man with a terrifying and risky hobby explains why he is fascinated by extreme weather.
+label:tensor(3)
+probtensor(False)
+text:Knicks: Houston activated but may sit until weekend Even though coach Lenny Wilkens and Allan Houston said there was no chance Houston would play, the Knicks took the curious step of activating the 6-6 guard from the injured list before last night #39;s loss in Memphis.
+label:tensor(1)
+probtensor(False)
+text:Google for the scholarly community The Internet search giant Google Inc. on late Wednesday unveiled Google Scholar, its next service aimed at listing scholarly literature such as theses, books and technical reports that appears to be most relevant to a search request.
+label:tensor(1)
+probtensor(False)
+text:Cavaliers sign Lucious Harris Lucious Harris signed Friday with the Cleveland Cavaliers, who hope the New Jersey Nets veteran can strengthen a backcourt weakened by injuries during the playoffs last season.
+label:tensor(1)
+probtensor(False)
+text:China mine blast rescue stalled Carbon monoxide prevents rescuers from reaching 141 men trapped after a deadly mine blast in central China.
+label:tensor(0)
+probtensor(False)
+text:SE Asia Forges Closer Ties with China, Japan, S.Korea Leaders of 13 Southeast and Northeast Asian states Monday underlined their determination to turn growing economic power into political influence by establishing a new summit-level grouping.
+label:tensor(1)
+probtensor(False)
+text:BU to induct four into Hall Hockey star David Sacco, a two-time first-team All-American and a finalist for the 1993 Hobey Baker Award, leads the list of four former Boston University athletes who will be inducted into the school's Hall of Fame Oct. 9.
+label:tensor(1)
+probtensor(False)
+text:Afghan Blast Has Alarming Implications  NAIK NAM, Afghanistan -- Saher Gul was chalking a long division lesson on the blackboard of his two-room village school. Twenty-five boys, ages 9 to 19, were sitting cross-legged on the dirt floor. Suddenly the earthen walls and ceiling exploded and collapsed, smothering the class in a mountain of rubble.
+label:tensor(0)
+probtensor(False)
+text:Oracle Poised to Pounce of PeopleSoft (AP) AP - Bolstered by investors, Oracle Corp. appears destined to complete its long-sought takeover of PeopleSoft Inc. unless its rival becomes more profitable and proves it is worth more than the  #36;9.2 billion bid currently on the table.
+label:tensor(3)
+probtensor(False)
+text:Fannie Mae Execs, Regulator Square Off  WASHINGTON (Reuters) - Fannie Mae executives and their  regulator squared off on Wednesday, with executives denying any  accounting irregularity and the regulator saying the housing  finance company's management may have to go.
+label:tensor(1)
+probtensor(False)
+text:Seiko Epson unveil updated micro flying robot Seiko Epson have unveiled their latest wireless flying micro-robot named the FR-II. The successor to the FR robot the latest micromechatronic contraption has a number of improvements. It is 2.3g heavier than the original FR at 12.3g but does away with the ...
+label:tensor(3)
+probtensor(False)
+text:Job application hidden in virus code Experts at a UK anti-virus firm have discovered a job application buried in lines of code for two new computer worm viruses. The message, which could only be read by anti-virus professionals, said:  quot;We searching 4 work in AV (anti-virus) industry.
+label:tensor(3)
+probtensor(False)
+text:Vodafone Makes Sun Its Preferred IT Vendor (Ziff Davis) Ziff Davis - Vodafone signs a global purchasing agreement with Sun that gives Vodafone consistent terms for Sun's hardware, software and services product line.
+label:tensor(1)
+probtensor(False)
+text:Holiday Hopes Brighten for Retailers  NEW YORK (Reuters) - U.S. retailers may have a happier  holiday season than expected just a month ago, as shoppers  cheer up after the elections and start thinking about what to  buy as the weather gets cold, analysts said.
+label:tensor(1)
+probtensor(False)
+text:Baseball: After 34 years, baseball returns to Washington Forget the mayhem in Iraq, the presidential elections, even last night #39;s candidates #39; debate. A banner headline yesterday in The Washington Post proclaimed the only news in 
+label:tensor(1)
+probtensor(False)
+text:Qureia condemns Tel Aviv attack Palestinian Prime Minister Ahmed Qureia denounced Monday #39;s suicide attack in Tel Aviv, dismissing fears it might endanger Yasser Arafat #39;s return to Ramallah.
+label:tensor(1)
+probtensor(False)
