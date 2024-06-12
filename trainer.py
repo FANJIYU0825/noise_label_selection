@@ -121,6 +121,7 @@ class SelfMixTrainer:
             y_pred[index] = pred
             
         eval_res = metric(y_true, y_pred)
+      
         logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
             .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
     def test(self, eval_loader=None):
@@ -140,8 +141,21 @@ class SelfMixTrainer:
         eval_res = metric(y_true, y_pred)
         logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
             .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
+        evaluation_results = "Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}".format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1'])
         eval_matrix = matrix(y_true, y_pred)
         logger.info(eval_matrix)
+        
+        selecting_strategy=self.model_args.selection_strategy 
+        noise_ratio = self.model_args.noised_rate
+        with open(f'./output/{selecting_strategy}.txt', 'a+') as f:
+            
+            f.write(f'Eval Results: +{selecting_strategy}+{noise_ratio}\n')
+            f.write("\n"+evaluation_results )
+            f.write("\n"+str(eval_matrix))
+        
+            
+            
+            
     def train(self):
         logger.info("***** Mixup Train *****")       
 
@@ -149,21 +163,60 @@ class SelfMixTrainer:
         eval_loader = self.eval_data.run("all")
         
         for epoch_id in range(1, self.training_args.train_epochs + 1):
-            prob = self._eval_samples(train_loader)
-            pred = (prob > self.model_args.p_threshold)
-            # prob = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
-            # larger than Median 
-            # print('prob ',prob)
-            # pred = (prob > 0)
-            # unlabel_pred = (prob <0)
+            seletion_strategy = self.model_args.selection_strategy
+            if seletion_strategy=='GMM':
+                prob = self._eval_samples(train_loader)
+                pred = (prob > self.model_args.p_threshold)
+            else:
+                prob = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
+                pred = (prob > 0)
+                
             
-            # labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob,unlabel_pred )
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
-            
-          
-                        
+            # return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index] # return of labeled
+            inputs = []
+            for i in range(len(labeled_train_loader.dataset)):
+                probb,label,text =labeled_train_loader.dataset[i][3],labeled_train_loader.dataset[i][2],labeled_train_loader.dataset[i][5]
+                
+                # print(f'labeled :input {probb} label {label} text {text}')
+                inputs.append(
+                    {
+                        "input":text,
+                        "label":label,
+                        "prob":probb,
+                        "selection_strategy":seletion_strategy,
+                        "noise_ratio":self.model_args.noised_rate,
+                        "type":"labeled"
+                    }
+                )
+                
+            for i in range(len(unlabeled_train_loader.dataset)):
+                probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
+                print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
+                inputs.append(
+                      
+                    {  "input":text,
+                        "label":label,
+                        "prob":prob[probb],
+                        "selection_strategy":seletion_strategy,
+                        "noise_ratio":self.model_args.noised_rate,
+                        "type":"unlabeled"   
+                    }
+                )  
+            # csv writer 
+            import csv
+            with open(f'./output/{seletion_strategy}.csv', 'w', newline='') as csvfile:
+                fieldnames = ['input', 'label', 'prob','selection_strategy','noise_ratio','type']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in inputs:
+                    writer.writerow(i)
+                 
             print("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
-            # exit()
+            exit()
+           
+                
+            
             logger.info("***   Train epoch  %d ***", epoch_id)
             self._train_epoch(labeled_train_loader, unlabeled_train_loader)
             

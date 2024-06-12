@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 import torch
-import pysnooper
+
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ class SelfMixDataset(Dataset):
             self.inputs = [self.inputs[idx] for idx in pred_idx]
             self.labels = self.labels[pred_idx]
             self.pred_idx = pred_idx
-            self.prob = [pred[idx] for idx in pred_idx]
+            
                                        
     def __len__(self):
         return len(self.inputs)
@@ -81,10 +81,10 @@ class SelfMixDataset(Dataset):
         if self.mode == 'labeled':
             
             # return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index]
-            return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index]
+            return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index]
         elif self.mode == 'unlabeled':
-            # return input_id, att_mask, self.pred_idx[index],self.inputs[index],self.labels[index], self.prob[index]
-            return input_id, att_mask, self.pred_idx[index]
+            # input_id, att_mask, self.pred_idx[index]
+            return input_id, att_mask, self.pred_idx[index],self.inputs[index],self.labels[index]
         elif self.mode == 'all':
             return input_id, att_mask, self.labels[index], index
 

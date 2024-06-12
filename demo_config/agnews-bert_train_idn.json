@@ -7,7 +7,7 @@
     "lambda_p": 0.0,
     "lambda_r": 0.3,
     "class_reg": true,
-
+    "selection_strategy": "GMM",
     "dataset_name": "agnews",
     "train_file_path": "./data/agnews/train_0.4.csv",
     "eval_file_path": "./data/agnews/test.csv",

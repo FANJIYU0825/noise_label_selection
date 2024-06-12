@@ -82,6 +82,14 @@ class ModelArguments:
         default='bert-base-uncased',
         metadata={"help": "The pretrained language model to use"}
     )
+    selection_strategy: Optional[str] = field(
+        default='GMM',
+        metadata={"help": "The strategy to select the samples"}
+    )
+    noised_rate: float = field(
+        default=0.2,
+        metadata={"help": "The noise rate"}
+    )
 
 @dataclass
 class DataTrainingArguments:
@@ -181,11 +189,12 @@ def main():
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
         level=logging.INFO,
+        filename='log.txt'
     )
     set_seed(training_args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # load data
-
+    logging.info(f"selection_strategy{model_args.selection_strategy}")
     
     train_datasets, train_num_classes = load_dataset(data_args.train_file_path, data_args.dataset_name)
     eval_datasets, eval_num_classes = load_dataset(data_args.eval_file_path, data_args.dataset_name)

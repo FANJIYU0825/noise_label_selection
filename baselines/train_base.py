@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--save_model',action='store_true', default=True)
 parser.add_argument('--save_model_dir', default='./save_model/')
 parser.add_argument('--pretrain_model_dir', default='./pre_train_models')
-parser.add_argument('--train_path', default='./data/agnews/agnews_train_0.4.csv')
+parser.add_argument('--train_path', default='./data/agnews/labeleddependent_ag_news_IDN_0.4.csv')
 parser.add_argument('--test_path', default='./data/agnews/agnews_test.csv')
 parser.add_argument('--noise_ratio',type=float,default=0.0)
 parser.add_argument('--noise_type',type=str,default="sym")
@@ -64,7 +64,7 @@ setup_seed(args.seed)
 EPOCH = args.epoch
 BATCH_SIZE = args.batch_size
 
-print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"use gpu device =",os.environ["CUDA_VISIBLE_DEVICES"])
+print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"use gpu device =",1)
 
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"load data from",args.train_path)
 

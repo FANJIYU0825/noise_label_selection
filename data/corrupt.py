@@ -29,7 +29,7 @@ def main(args):
     num_classes = max(data[0]) + 1
     for idx in range(len(data)):
         true_label = data.loc[idx, 0]
-        if args.noise_ratio == 'sym':
+        if args.noise_type == 'sym':
             p = args.noise_ratio / (num_classes - 1) * np.ones(num_classes)
             p[true_label] = 1 - args.noise_ratio
             observed_label = np.random.choice(num_classes, p=p)
@@ -38,7 +38,7 @@ def main(args):
             observed_label = np.random.choice([true_label, nlabel], p=[1 - args.noise_ratio, args.noise_ratio])
         data.loc[idx, 0] = observed_label
     
-    data.to_csv(args.save_path, header=False, index=False)
+    data.to_csv(args.save_path, header=False ,index=False)
 
 
 if __name__ == "__main__":

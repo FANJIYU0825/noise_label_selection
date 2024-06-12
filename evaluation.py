@@ -48,7 +48,14 @@ class ModelArguments:
         default=0.1,
         metadata={"help": "Dropout rate"}
     )
-    
+    selection_strategy: Optional[str] = field(
+        default='GMM',
+        metadata={"help": "The strategy to select the samples"}
+    )
+    noised_rate: float = field(
+        default=0.2,
+        metadata={"help": "The noise rate"}
+    )
 
 @dataclass
 class DataEvalArguments:
@@ -102,8 +109,12 @@ def main():
     
     tester = SelfMixTrainer(
         model=model,
-        eval_data=selfmix_eval_data
+        eval_data=selfmix_eval_data,
+        model_args=model_args,
     )
+    if not os.path.exists('output'):
+        os.makedirs('output')
+    
     tester.test()
 
 

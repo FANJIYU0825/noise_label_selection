@@ -4,7 +4,7 @@ import random
 import progressbar as pbar
 import torch
 import torch.nn.functional as F
-from progressbar import DynamicMessage as DM
+# from progressbar import DynamicMessage as DM
 
 
 def print_args(args):
@@ -28,7 +28,7 @@ def count_noise(labeled_loader, unlabeled_loader):
 
 
 def get_progressbar(epoch,epochs, total, note):
-    DM = pbar.DynamicMessage()
+    DM = pbar.widgets.DynamicMessage
     widgets = [pbar.CurrentTime(),' ',
         note,' ',str(epoch),'|',str(epochs),' ',
         pbar.Percentage(), ' ', pbar.Bar('#'), ' ', 
