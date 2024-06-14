@@ -166,3 +166,6 @@ bert-base-uncased
 save_model
 *.txt
 output
+.fuse_hidden*
+
+ag_new_noise

@@ -74,7 +74,7 @@ class SelfMixTrainer:
         loss_func = nn.CrossEntropyLoss()
         now_samples = 0
         for epoch_id in range(1, warmup_epochs + 1):
-            logger.info("***** Warmup epoch %d *****", epoch_id)
+            # logger.info("***** Warmup epoch %d *****", epoch_id)
             
             self.model.train()
             train_loss, train_acc = 0., 0.
@@ -129,6 +129,7 @@ class SelfMixTrainer:
             eval_loader = self.eval_data.run("all")        
         self.model.eval()
         y_true, y_pred = np.zeros(len(eval_loader.dataset), dtype=int), np.zeros(len(eval_loader.dataset), dtype=int)
+        print('len eval_loader',len(eval_loader.dataset))
         for j, data in enumerate(eval_loader):
             val_input_ids, val_att, val_labels, index = [Variable(elem.cuda()) for elem in data]
             with torch.no_grad():
@@ -148,7 +149,7 @@ class SelfMixTrainer:
         selecting_strategy=self.model_args.selection_strategy 
         noise_ratio = self.model_args.noised_rate
         noise_type = self.model_args.noise_type
-        with open(f'./out_put/{selecting_strategy}.txt', 'a+') as f:
+        with open(f'./output/{selecting_strategy}.txt', 'a') as f:
             
             f.write(f'\nEval Results: {noise_type}+{selecting_strategy}+{noise_ratio}')
             f.write("\n"+evaluation_results )
@@ -193,7 +194,8 @@ class SelfMixTrainer:
                 
             for i in range(len(unlabeled_train_loader.dataset)):
                 probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
-                print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
+                # print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
+                # logger.info(f'unlabeled : input {prob[probb]} label {label} text {text}')
                 inputs.append(
                       
                     {  "input":text,
@@ -206,15 +208,17 @@ class SelfMixTrainer:
                 )  
             # csv writer 
             import csv
-            with open(f'./output/{seletion_strategy}.csv', 'w+', newline='') as csvfile:
+            noise_type = self.model_args.noise_type
+            noise_ratio = self.model_args.noised_rate
+            with open(f'./output/{seletion_strategy}_{noise_type}:{noise_ratio}.csv', 'w', newline='') as csvfile:
                 fieldnames = ['input', 'label', 'prob','selection_strategy','noise_ratio','type']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i in inputs:
                     writer.writerow(i)
-            print('select_strategy',seletion_strategy)     
+            print('select_strategy',seletion_strategy,'noise_type',noise_type,'noise_ratio',noise_ratio)     
             print("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
-            
+            logging.info("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
            
                 
             
@@ -371,12 +375,19 @@ class SelfMixTrainer:
                     loss_i = loss[i]
                     loss_i = list(loss_i)
                     correct_label = true_labels[i]
+                    print('correct_label',correct_label)
                     correct_score = loss[i][correct_label]
-                    loss_i.pop(correct_label)
-                    loss_i = sorted(loss_i,reverse=True)
+                    print('correct_score',correct_score)  
+                      
+                    loss_new=loss_i.pop(correct_label)
+                    
+                    print('loss_i',len(loss_new),max(loss_new))
+                    loss_new = sorted(loss_new,reverse=True)
                     
                     losses.append(correct_score-max(loss_i))
-        losses = np.array(losses)        
+        losses = np.array(losses)    
+        # stop here
+        exit()   
         return losses
     def _eval_samples_protype(self, eval_loader,tamplate_tokenizer):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

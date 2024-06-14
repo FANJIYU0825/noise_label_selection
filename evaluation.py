@@ -2,9 +2,9 @@ from dataclasses import dataclass, field
 from typing import Optional, Union, List, Dict, Tuple
 import logging, sys, os, random
 import torch
-from datasets import *
-from model import *
-from trainer import *
+from util.datasets import *
+from util.model import *
+from util.trainer import *
 
 from transformers import (
     AutoModel,
@@ -56,7 +56,10 @@ class ModelArguments:
         default=0.2,
         metadata={"help": "The noise rate"}
     )
-
+    noise_type: Optional[str] = field(
+        default='sym',
+        metadata={"help": "The noise type"}
+    )
 @dataclass
 class DataEvalArguments:
     """

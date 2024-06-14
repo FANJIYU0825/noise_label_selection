@@ -15,7 +15,15 @@ from preprocess.read_data import *
 from utils.common import get_co_progressbar
 from utils.loss import loss_coteaching
 from utils.metric import metric
+import logging
 
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO,
+    filename='baseline_log.txt'
+)
+logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 warnings.filterwarnings('ignore')
 
@@ -26,11 +34,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--save_model',action='store_true', default=False)
 parser.add_argument('--save_model_dir', default='./save_model/')
 parser.add_argument('--pretrain_model_dir', default='./pre_train_models')
-parser.add_argument('--train_path', default='./data/agnews/agnews_train_0.4.csv')
+parser.add_argument('--train_path', default='./data/agnews/labeleddependent_ag_news_IDN_0.2.csv')
 parser.add_argument('--test_path', default='./data/agnews/agnews_test.csv')
 parser.add_argument('--noise_ratio',type=float,default=0.0)
 parser.add_argument('--noise_type',type=str,default="sym")
-parser.add_argument('--fix_data',type=str,default='1')
+parser.add_argument('--fix_data',type=str,default='0')
 parser.add_argument('--show_bar',action='store_true', default=False)
 parser.add_argument('--seed',type=int,default=128)
 
@@ -73,7 +81,7 @@ def setup_seed(seed):
 print_args(args)
 setup_seed(args.seed)
 # 
-print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"use gpu device =",os.environ["CUDA_VISIBLE_DEVICES"])
+print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"use gpu device =",0)
 
 
 EPOCH = args.epoch
@@ -123,9 +131,9 @@ def train(args, train_data, epoch, model1, optimizer1, model2, optimizer2):
     bar = None
     if args.show_bar:
         bar = get_co_progressbar(epoch+1, EPOCH, len(train_data), 'train ')
-
-    for i, data in enumerate(train_data):
-
+    
+    for i,( data) in enumerate(train_data):
+          
         input_ids, attention_mask, labels, _ = [Variable(elem.cuda()) for elem in data]
         
         # Forward + Backward + Optimize
@@ -280,12 +288,12 @@ def main():
 
         test_best_l.append(test_best)
         test_last_l.append(test_last)
-
+    logger.info(f'methd: coteaching_{args.noise_type}_rate_{args.noise_ratio}')
     print('test_best',test_best_l)
     print('test_last',test_last_l)
-    
+    logger.info('test_best %f , test_last %f'%(test_best, test_last))
     print("Test best %f , last %f"%(test_best, test_last))
-
+    logger.info('test_best %f , test_last %f'%(test_best, test_last))
 
 if __name__=='__main__':
     main()

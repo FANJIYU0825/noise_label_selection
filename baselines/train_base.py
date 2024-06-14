@@ -14,7 +14,15 @@ from preprocess.dataloader import *
 from preprocess.read_data import *
 from utils.common import *
 from utils.metric import *
+import logging
 
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO,
+    filename='baseline_log.txt'
+)
+logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 warnings.filterwarnings('ignore')
 
@@ -24,11 +32,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--save_model',action='store_true', default=True)
 parser.add_argument('--save_model_dir', default='./save_model/')
 parser.add_argument('--pretrain_model_dir', default='./pre_train_models')
-parser.add_argument('--train_path', default='./data/agnews/labeleddependent_ag_news_IDN_0.4.csv')
+parser.add_argument('--train_path', default='./data/agnews/labeleddependent_ag_news_IDN_0.2.csv')
 parser.add_argument('--test_path', default='./data/agnews/agnews_test.csv')
 parser.add_argument('--noise_ratio',type=float,default=0.0)
 parser.add_argument('--noise_type',type=str,default="sym")
-parser.add_argument('--fix_data',type=str,default='1')
+parser.add_argument('--fix_data',type=str,default='0')
 parser.add_argument('--show_bar',action='store_true', default=False)
 parser.add_argument('--seed',type=int,default=128)
 
@@ -182,4 +190,7 @@ test_best_l, test_last_l = train(args, mymodel, optimizer, train_loader, test_da
 
 print('test_best',test_best_l)
 print('test_last',test_last_l)
+logger.info(f'methd: bert base_{args.noise_type}_rate_{args.noise_ratio}')
+logger.info('test_best %s'%test_best_l, 'test_last %s'%test_last_l)
 print("Test best %f , last %f"%(test_best_l[-1], test_last_l[-1]))
+logger.info("Test best %f , last %f"%(test_best_l[-1], test_last_l[-1]))

@@ -3,9 +3,9 @@ from typing import Optional, Union, List, Dict, Tuple
 import logging, sys, os, random
 import torch
 import numpy as np
-from datasets import *
-from model import *
-from trainer import SelfMixTrainer
+from util.datasets import *
+from util.model import *
+from util.trainer import SelfMixTrainer
 
 from transformers import (
     AutoModel,
@@ -90,6 +90,10 @@ class ModelArguments:
         default=0.2,
         metadata={"help": "The noise rate"}
     )
+    noise_type: Optional[str] = field(
+        default='sym',
+        metadata={"help": "The noise type"}
+    )
 
 @dataclass
 class DataTrainingArguments:
@@ -123,6 +127,7 @@ class DataTrainingArguments:
             "help": "The maximum total input sentence length after tokenization. Sequences longer."
         },
     )
+    
 
 
 @dataclass
@@ -194,7 +199,7 @@ def main():
     set_seed(training_args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # load data
-    logging.info(f"selection_strategy{model_args.selection_strategy}")
+    logging.info(f"selection_strategy:{model_args.selection_strategy}: noised_rate:{model_args.noised_rate} noise_type:{model_args.noise_type}")
     
     train_datasets, train_num_classes = load_dataset(data_args.train_file_path, data_args.dataset_name)
     eval_datasets, eval_num_classes = load_dataset(data_args.eval_file_path, data_args.dataset_name)
@@ -209,7 +214,7 @@ def main():
     model = model.to(device)
     
 
-    
+
     # load model
     model_args.token_representation = tokenizer 
     model_args.plm_model = AutoModel.from_pretrained(model_args.pretrained_model_name_or_path)

@@ -10,8 +10,8 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
 import os
-
-from datasets import load_dataset
+from sklearn.utils import resample
+from util.datasets import load_dataset
 
 dataset = load_dataset("fancyzhx/ag_news")
 
@@ -62,43 +62,43 @@ test_labels = dataset['test']['label']
 train_dataset = AGNewsDataset(train_texts, train_labels, tokenizer, max_length)
 test_dataset = AGNewsDataset(test_texts, test_labels, tokenizer, max_length)
 
-# train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-# test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-# # with out sample train 
-# train_texts = df_train['text']
-# train_labels = df_train['label']
-# train_dataset_all = AGNewsDataset(train_texts, train_labels, tokenizer, max_length)
-# train_loader_all = DataLoader(train_dataset_all, batch_size=32, shuffle=True)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+# with out sample train 
+train_texts = df_train['text']
+train_labels = df_train['label']
+train_dataset_all = AGNewsDataset(train_texts, train_labels, tokenizer, max_length)
+train_loader_all = DataLoader(train_dataset_all, batch_size=32, shuffle=True)
 # # Define LSTM model
-# class LSTMModel(nn.Module):
-#     def __init__(self, vocab_size, embed_size, hidden_size, output_size, num_layers, dropout):
-#         super(LSTMModel, self).__init__()
-#         self.embedding = nn.Embedding(vocab_size, embed_size)
-#         self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, dropout=dropout, batch_first=True)
-#         self.fc = nn.Linear(hidden_size, output_size)
-#         self.softmax = nn.Softmax(dim=1)
+# 
+class LSTMModel(nn.Module):
+    def __init__(self, vocab_size, embed_size, hidden_size, output_size, num_layers, dropout):
+        super(LSTMModel, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, dropout=dropout, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+        self.softmax = nn.Softmax(dim=1)
     
-#     def forward(self, input_ids, attention_mask):
-#         embedded = self.embedding(input_ids)
-#         packed_output, (hidden, cell) = self.lstm(embedded)
-#         output = self.fc(hidden[-1])
-#         return self.softmax(output)
-#     # save 
-#     def save(self, path):
-#         torch.save(self.state_dict(), path)
-
+    def forward(self, input_ids, attention_mask):
+        embedded = self.embedding(input_ids)
+        packed_output, (hidden, cell) = self.lstm(embedded)
+        output = self.fc(hidden[-1])
+        return self.softmax(output)
+    # save 
+    def save(self, path):
+        torch.save(self.state_dict(), path)
 # # Hyperparameters
-# vocab_size = tokenizer.vocab_size
-# embed_size = 128
-# hidden_size = 256
-# output_size = 4  # Number of classes in AG News
-# num_layers = 2
-# dropout = 0.5
+vocab_size = tokenizer.vocab_size
+embed_size = 128
+hidden_size = 256
+output_size = 4  # Number of classes in AG News
+num_layers = 2
+dropout = 0.5
 
-# # Initialize model, loss function, and optimizer
-# model = LSTMModel(vocab_size, embed_size, hidden_size, output_size, num_layers, dropout)
-# criterion = nn.CrossEntropyLoss()
-# optimizer = optim.Adam(model.parameters(), lr=0.001)
+# Initialize model, loss function, and optimizer
+model = LSTMModel(vocab_size, embed_size, hidden_size, output_size, num_layers, dropout)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
 # # Training loop
@@ -160,12 +160,13 @@ test_dataset = AGNewsDataset(test_texts, test_labels, tokenizer, max_length)
 #     softmax_out_avg += get_softmax_out(model, softmax_loader, device)
 
 # softmax_out_avg /= num_epochs
-# if not os.path.exists('AG_NEWS_NOISE'):
-#     os.makedirs('AG_NEWS_NOISE')
-# np.save('AG_NEWS_NOISE/softmax_out_avg.npy', softmax_out_avg)
-# model.save('AG_NEWS_NOISE/model.pt')
+# if not os.path.exists('ag_new_noise'):
+#     os.makedirs('ag_new_noise')
+# np.save('ag_new_noise/softmax_out_avg.npy', softmax_out_avg)
+# model.save('ag_new_noise/model.pt')
 print('Generating noisy labels according to softmax_out_avg...')
-softmax_out_avg = np.load('AG_NEWS_NOISE/softmax_out_avg.npy')
+
+softmax_out_avg = np.load('ag_new_noise/softmax_out_avg.npy')
 labels = np.array(train_dataset.labels)
 label_noisy_cand, label_noisy_prob = [], []
 for i in range(len(labels)):
@@ -175,13 +176,16 @@ for i in range(len(labels)):
     label_noisy_prob.append(np.max(pred))
 
 noise_rate = 0.4
+
 label_noisy = labels.copy()
 index = np.argsort(label_noisy_prob)[-int(noise_rate * len(labels)):]
 label_noisy[index] = np.array(label_noisy_cand)[index]
 text=train_dataset.texts
-save_pth = os.path.join('AG_NEWS_NOISE', 'dependent' + str(noise_rate) + '.csv')
+save_pth = os.path.join('ag_new_noise', 'dependent' + str(noise_rate) + '.csv')
 pd.DataFrame.from_dict({'text':text,'label': labels, 'label_noisy': label_noisy
                         }).to_csv(save_pth, index=False)
+
+
 # print('Noisy label data saved to', save_pth)
 
 # noise_rate = 0.0
