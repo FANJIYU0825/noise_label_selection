@@ -379,15 +379,14 @@ class SelfMixTrainer:
                     correct_score = loss[i][correct_label]
                     print('correct_score',correct_score)  
                       
-                    loss_new=loss_i.pop(correct_label)
+                    loss_i.pop(correct_label)
                     
-                    print('loss_i',len(loss_new),max(loss_new))
+                    # print('loss_i',len(loss_new),max(loss_new))
                     loss_new = sorted(loss_new,reverse=True)
                     
                     losses.append(correct_score-max(loss_i))
         losses = np.array(losses)    
         # stop here
-        exit()   
         return losses
     def _eval_samples_protype(self, eval_loader,tamplate_tokenizer):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
