@@ -1,7 +1,7 @@
 import pandas as pd
 import argparse
 import numpy as np
-
+import random
 
 NUM_CLASSES = {
     'trec': 6,
@@ -26,7 +26,7 @@ def main(args):
     if args.keep_true_labels:
         data[2] = data[0]
     
-    num_classes = max(data[0]) + 1
+    num_classes = max(data[0]) 
     for idx in range(len(data)):
         true_label = data.loc[idx, 0]
         if args.noise_ratio == 'sym':
@@ -34,8 +34,13 @@ def main(args):
             p[true_label] = 1 - args.noise_ratio
             observed_label = np.random.choice(num_classes, p=p)
         else:
-            nlabel = (true_label + 1) % num_classes
+            
+            nlabel = (true_label ) % 2
+                
+            
+
             observed_label = np.random.choice([true_label, nlabel], p=[1 - args.noise_ratio, args.noise_ratio])
+        data.loc[idx, 0] = observed_label
         data.loc[idx, 0] = observed_label
     path=args.save_path.replace('.csv', f'_{args.noise_type}_{args.noise_ratio}.csv')
     data.to_csv(args.save_path, header=False, index=False)
