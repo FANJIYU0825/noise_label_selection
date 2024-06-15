@@ -94,6 +94,10 @@ class ModelArguments:
         default='sym',
         metadata={"help": "The noise type"}
     )
+    resp_threshold: Optional[str] = field(
+        default=str,
+        metadata={"help": "The threshold for responsibility"}
+    )
 
 @dataclass
 class DataTrainingArguments:
@@ -226,10 +230,10 @@ def main():
         model_args=model_args,
         training_args=training_args
     )
-    if os.path.exists("output"):
-        os.makedirs("output")
-    if os.path.exists("save_model"):
-        os.makedirs("save_model")    
+    # if os.path.exists("output"):
+    #     os.makedirs("output")
+    # if os.path.exists("save_model"):
+    #     os.makedirs("save_model")    
     # train and eval
     trainer.warmup()
     trainer.train()

@@ -170,15 +170,25 @@ class SelfMixTrainer:
                 prob = self._eval_samples(train_loader)
                 pred = (prob > self.model_args.p_threshold)
             else:
-                prob = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
-                pred = (prob > 0)
-                
+                resp_threshold=self.model.resp_threshold
+                prob,predict_distribution = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
+                # pred = (prob > 0)
+                # median
+                if resp_threshold =='mean':
+                    pred = (prob > np.mean(prob))
+                elif resp_threshold =='median':  
+                    pred = (prob > np.median(prob))
+                elif resp_threshold=='std':
+                    pred = (prob > np.std(prob))
+                else:
+                    pred = (prob >0)
             
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
             # return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index] # return of labeled
             inputs = []
             for i in range(len(labeled_train_loader.dataset)):
                 probb,label,text =labeled_train_loader.dataset[i][3],labeled_train_loader.dataset[i][2],labeled_train_loader.dataset[i][5]
+                index_of_data = labeled_train_loader.dataset[i][4]
                 
                 # print(f'labeled :input {probb} label {label} text {text}')
                 inputs.append(
@@ -186,6 +196,7 @@ class SelfMixTrainer:
                         "input":text,
                         "label":label,
                         "prob":probb,
+                        "distribution":predict_distribution[int(index_of_data)],
                         "selection_strategy":seletion_strategy,
                         "noise_ratio":self.model_args.noised_rate,
                         "type":"labeled"
@@ -194,6 +205,8 @@ class SelfMixTrainer:
                 
             for i in range(len(unlabeled_train_loader.dataset)):
                 probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
+                
+                print("index of data_unlabeled",)
                 # print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
                 # logger.info(f'unlabeled : input {prob[probb]} label {label} text {text}')
                 inputs.append(
@@ -201,6 +214,7 @@ class SelfMixTrainer:
                     {  "input":text,
                         "label":label,
                         "prob":prob[probb],
+                        "distribution":predict_distribution[probb],
                         "selection_strategy":seletion_strategy,
                         "noise_ratio":self.model_args.noised_rate,
                         "type":"unlabeled"   
@@ -210,8 +224,10 @@ class SelfMixTrainer:
             import csv
             noise_type = self.model_args.noise_type
             noise_ratio = self.model_args.noised_rate
-            with open(f'./output/{seletion_strategy}_{noise_type}:{noise_ratio}.csv', 'w', newline='') as csvfile:
-                fieldnames = ['input', 'label', 'prob','selection_strategy','noise_ratio','type']
+            resp_threshold= self.model_args.resp_threshold
+            
+            with open(f'./output/{seletion_strategy}_{noise_type}:{noise_ratio}_{resp_threshold}.csv', 'w', newline='') as csvfile:
+                fieldnames = ['input', 'label', 'prob','distribution','selection_strategy','noise_ratio','type']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i in inputs:
@@ -353,7 +369,8 @@ class SelfMixTrainer:
         # Normalize the vectors
         # label_outputs = F.normalize(label_outputs, p=2, dim=1)
         
-        losses = []   
+        losses = [] 
+        raw_disribution = []  
         with torch.no_grad():
             for i, data in enumerate(eval_loader):        
                 label_reps = label_outputs.mean(dim=1)  # Mean pooling
@@ -374,20 +391,22 @@ class SelfMixTrainer:
                 for i in range(len(loss)):
                     loss_i = loss[i]
                     loss_i = list(loss_i)
+                    raw_loss = loss_i.copy()
                     correct_label = true_labels[i]
-                    print('correct_label',correct_label)
+                    print("correct_label",correct_label)
                     correct_score = loss[i][correct_label]
-                    print('correct_score',correct_score)  
+                    
                       
                     loss_i.pop(correct_label)
-                    
+                    print("correct_score",correct_score,loss_i,max(loss_i))
+                    print("repans",correct_score-max(loss_i))
                     # print('loss_i',len(loss_new),max(loss_new))
-                    loss_new = sorted(loss_new,reverse=True)
-                    
+                    # loss_i = sorted(loss_i,reverse=True)
+                    raw_disribution.append(raw_loss)
                     losses.append(correct_score-max(loss_i))
         losses = np.array(losses)    
         # stop here
-        return losses
+        return losses,raw_disribution
     def _eval_samples_protype(self, eval_loader,tamplate_tokenizer):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         with torch.no_grad():

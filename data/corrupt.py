@@ -20,6 +20,10 @@ args = parser.parse_args()
 
 
 def main(args):
+    # set seed
+    random.seed(1)
+    np.random.seed(1)
+    
     data = pd.read_csv(args.src_data_path, header=None)
     assert 0. <= args.noise_ratio <= 1.
     
