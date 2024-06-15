@@ -16,7 +16,7 @@ from utils.common import get_co_progressbar
 from utils.loss import loss_coteaching
 from utils.metric import metric
 import logging
-
+from sklearn.metrics import confusion_matrix
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
     datefmt="%m/%d/%Y %H:%M:%S",
@@ -200,7 +200,9 @@ def evaluate(valid_data, epoch, model1, model2, mode='Valid'):
     val_loss2 = 0.0
     val_acc2 = 0.0
     val_recall2 = 0.0
-
+    true_labels = []
+    pred_1_labels = []
+    pred_2_labels = []
     for j, data in enumerate(valid_data):
 
         input_ids, attention_mask, labels, _ = [Variable(elem.cuda()) for elem in data]
@@ -218,7 +220,10 @@ def evaluate(valid_data, epoch, model1, model2, mode='Valid'):
             out1 = out1.cpu().detach().numpy()
             out2 = out2.cpu().detach().numpy()
             labels = labels.cpu().detach().numpy()
-
+            true_labels.extend(labels)
+            pred_1_labels.extend(np.argmax(out1, axis=1))
+            pred_2_labels.extend(np.argmax(out2, axis=1))
+            
             metric1 = metric(out1,labels)
             metric2 = metric(out2,labels)
 
@@ -236,11 +241,15 @@ def evaluate(valid_data, epoch, model1, model2, mode='Valid'):
     val_loss2 /= j+1
     val_acc2 /= len(valid_data.dataset)
     val_recall2 /= len(valid_data.dataset)
-
+    
+    
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), mode,
     'Epoch [%d/%d]: Loss1: %.4F, Accuracy1: %.4f, Loss2: %.4f, Accuracy2: %.4f' \
         %(epoch+1, EPOCH, val_loss1, val_acc1, val_loss2, val_acc2))
-
+    cm1 = confusion_matrix(true_labels, pred_1_labels)
+    cm2 = confusion_matrix(true_labels, pred_2_labels)
+    mean_cm = (cm1 + cm2) / 2
+    logger.info(f'{mode} confusion matrix: {mean_cm}')
     return val_acc1, val_acc2
 
 

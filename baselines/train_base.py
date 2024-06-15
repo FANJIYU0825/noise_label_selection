@@ -15,7 +15,7 @@ from preprocess.read_data import *
 from utils.common import *
 from utils.metric import *
 import logging
-
+from sklearn.metrics import confusion_matrix
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
     datefmt="%m/%d/%Y %H:%M:%S",
@@ -157,7 +157,8 @@ def evaluate(data, epoch, mymodel, mode):
     acc = 0.0
     recall = 0.0
     mymodel.eval()
-
+    true_labels = []
+    pred_labels = []
     for j, batch in enumerate(data):   
         input_ids, attention_mask, labels, _ = [Variable(elem.cuda()) for elem in batch]
      
@@ -167,7 +168,8 @@ def evaluate(data, epoch, mymodel, mode):
             pred = F.log_softmax(logits)
             pred = pred.cpu().detach().cpu().numpy()
             labels = labels.cpu().detach().cpu().numpy()
-
+            true_labels.extend(labels)
+            pred_labels.extend(np.argmax(pred, axis=1))
             metric_ = metric(pred, labels)
             acc += metric_[0] * labels.size
             recall += metric_[2] * labels.size
@@ -175,10 +177,10 @@ def evaluate(data, epoch, mymodel, mode):
     loss /= len(data)
     acc /= len(data.dataset)
     recall /= len(data.dataset)
-
+    cm = confusion_matrix(true_labels, pred_labels)
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), mode, " %d/%d epochs Loss:%f, Acc:%f, Recall:%f" \
     %(epoch, EPOCH, loss , acc , recall))
-
+    logger.info(f"{cm}")
     return loss, acc
 
 mymodel=Bert4Classify(args)
