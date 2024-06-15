@@ -42,6 +42,7 @@ def main(args):
             observed_label = np.random.choice([true_label, nlabel], p=[1 - args.noise_ratio, args.noise_ratio])
         data.loc[idx, 0] = observed_label
         
+        
     path=args.save_path.replace('.csv', f'_{args.noise_type}_{args.noise_ratio}.csv')
     data.columns = ['label', 'text', 'index']
     data.to_csv(path, index=False)

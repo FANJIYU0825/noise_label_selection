@@ -226,7 +226,10 @@ def main():
         model_args=model_args,
         training_args=training_args
     )
-    
+    if os.path.exists("output"):
+        os.makedirs("output")
+    if os.path.exists("save_model"):
+        os.makedirs("save_model")    
     # train and eval
     trainer.warmup()
     trainer.train()
