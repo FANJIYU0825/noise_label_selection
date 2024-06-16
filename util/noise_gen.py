@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.utils.multiclass import unique_labels
-
+import random
 def get_sorted_idx(probs, labels, class_id=None):
     '''
     Returns indices of samples beloning to class_id. Indices are sorted according to probs. First one is least confidently class_id
@@ -85,3 +85,20 @@ def noise_softmax(x_train, y_train_int, probs, noise_ratio):
             y_noisy[i] = np.random.choice(classes_clipped, 1)
 
     return y_noisy, probs
+
+
+def noise_gen_simple(logits ,init_label, noise_ratio):
+    # 获取预测的噪声标记
+    noise_label = np.argmax(logits, axis=1)
+
+    # 计算要替换的真实标记的数量（20%）
+    num_elements_to_replace = int(noise_ratio* len(init_label))
+
+    # 随机选择索引进行替换
+    indices_to_replace = random.sample(range(len(init_label)), num_elements_to_replace)
+
+    # 替换部分真实标记为噪声标记
+    modified_true_label = init_label.copy()
+    for index in indices_to_replace:
+        modified_true_label[index] = noise_label[index]
+    return modified_true_label

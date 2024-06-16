@@ -21,7 +21,7 @@ data={
     
     "seed": 1,
     "warmup_strategy": "samples",
-    "warmup_samples": 100,
+    "warmup_samples": 5000,
     "train_epochs": 4,
     "grad_acc_steps": 1,
     "model_save_path": "./save_model/CCN-selfmix_agnews_GMM_0.2.pt",
@@ -102,15 +102,16 @@ os.system(train_comand_GMM_04)
 os.system(eval_comand_GMM_04)
 
  
-for i in ['median', 'mean', 'std','other']:
-    resp_threshold = i
-   
 
-    train_comand_Rep02=f"python train.py --resp_threshold{resp_threshold} --noise_type {noise_type } --noised_rate {noised_rate_02}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate 0.1 --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_02} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_02}"
-    os.system(train_comand_Rep02)
+    
+resp_threshold='other'  
+model_save_path_rep_02_use=model_save_path_rep_02.replace('.pt', f'_{resp_threshold}.pt')
+model_save_path_rep_04_use=model_save_path_rep_04.replace('.pt', f'_{resp_threshold}.pt')
+train_comand_Rep02=f"python train.py  --noise_type {noise_type } --noised_rate {noised_rate_02}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate 0.1 --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_02} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_02_use}"
+os.system(train_comand_Rep02)
 
-    train_comand_Rep_04= f'python train.py --resp_threshold{resp_threshold} --noise_type {noise_type } --noised_rate {noise_rate_04}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_04} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_04}'
-    os.system(train_comand_Rep_04)
+train_comand_Rep_04= f'python train.py --noise_type {noise_type } --noised_rate {noise_rate_04}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_04} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_04_use}'
+os.system(train_comand_Rep_04)
 
    
 
@@ -118,25 +119,26 @@ for i in ['median', 'mean', 'std','other']:
     #     #evaluation
 
 
-    noise_rate = 0.2
-   
-    model_save_path_rep_02=model_save_path_rep_02.replace('.pt', f'_{resp_threshold}.pt')
-    eval_comand_Rep02 = f"python evaluation.py  --noise_type {noise_type } --noised_rate {noised_rate_02} --model_name_or_path {model_save_path_rep_02} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size} --selection_strategy {selection_strategy_Rep}"
-    os.system(eval_comand_Rep02)
+noise_rate = 0.2
+
+
+print(model_save_path_rep_02)
+eval_comand_Rep02 = f"python evaluation.py  --noise_type {noise_type } --noised_rate {noised_rate_02} --model_name_or_path {model_save_path_rep_02_use} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size} --selection_strategy {selection_strategy_Rep}"
+os.system(eval_comand_Rep02)
 
 
 
 
 
-    noise_rate = 0.4
+noise_rate = 0.4
 
 
-    model_save_path_rep_04=model_save_path_rep_04.replace('.pt', f'_{resp_threshold}.pt')
-    eval_comand_Rep_04 = f"python evaluation.py --noise_type {noise_type } --noised_rate {noise_rate_04} --model_name_or_path {model_save_path_rep_04} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_Rep}"
-    os.system(eval_comand_Rep_04)
+
+eval_comand_Rep_04 = f"python evaluation.py --noise_type {noise_type } --noised_rate {noise_rate_04} --model_name_or_path {model_save_path_rep_04_use} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_Rep}"
+os.system(eval_comand_Rep_04)
 
 
-#coteaching 
+# coteaching 
 
 coteach_comand_02 = f"python baselines/train_coteaching.py --train_path {train_file_path_02} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_02} "
 

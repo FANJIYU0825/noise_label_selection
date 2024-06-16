@@ -1,4 +1,4 @@
-from util.noise_gen import noise_softmax
+from util.noise_gen import noise_softmax, noise_gen_simple
 from argparse import ArgumentParser
 import pandas as pd
 import numpy as np
@@ -26,7 +26,7 @@ def main():
     ind = df.iloc[:, 2]
     if args.noise_type == 'idn':
        
-        y_noise,prob=noise_softmax(x_train, y_inint, logit[ind], args.noise_ratio)
+        y_noise=noise_gen_simple( logit[ind],y_inint, args.noise_ratio)
         path=args.save_path.replace('.csv', f'_{args.noise_type}_{args.noise_ratio}.csv')
         # data.to_csv(args.save_path, header=False, index=False)
         # data.to_csv(path, index=False)
