@@ -110,8 +110,11 @@ class SelfMixTrainer:
         if eval_loader is None:
             eval_loader = self.eval_data.run("all")        
         self.model.eval()
+        
+        
         y_true, y_pred = np.zeros(len(eval_loader.dataset), dtype=int), np.zeros(len(eval_loader.dataset), dtype=int)
         for j, data in enumerate(eval_loader):
+            
             val_input_ids, val_att, val_labels, index = [Variable(elem.cuda()) for elem in data]
             with torch.no_grad():
                 index = index.long().cpu().detach().numpy()
@@ -149,7 +152,9 @@ class SelfMixTrainer:
         selecting_strategy=self.model_args.selection_strategy 
         noise_ratio = self.model_args.noised_rate
         noise_type = self.model_args.noise_type
-        with open(f'./output/{selecting_strategy}.txt', 'a') as f:
+        target_class = self.model_args.target_class
+        replace_class = self.model_args.replace_class
+        with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.txt', 'a') as f:
             
             f.write(f'\nEval Results: {noise_type}+{selecting_strategy}+{noise_ratio}')
             f.write("\n"+evaluation_results )
@@ -173,9 +178,9 @@ class SelfMixTrainer:
             else:
                 
                 prob,predict_distribution = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
-                # pred = (prob > 0)
-                # median
-               
+                
+                
+                
                 pred = (prob >0)
             
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
@@ -185,9 +190,12 @@ class SelfMixTrainer:
                 probb,label,text =labeled_train_loader.dataset[i][3],labeled_train_loader.dataset[i][2],labeled_train_loader.dataset[i][5]
                 index_of_data = labeled_train_loader.dataset[i][4]
                 if seletion_strategy=='GMM':
-                   distri=None
+                    distri=prob[int(index_of_data)]
                 else:
-                    distri=predict_distribution[int(index_of_data)]    
+                    
+                    distri=predict_distribution[int(index_of_data)] 
+                    
+                    
                 # print(f'labeled :input {probb} label {label} text {text}')
                 inputs.append(
                     {
@@ -201,11 +209,14 @@ class SelfMixTrainer:
                         "type":"labeled"
                     }
                 )
-                
+           
             for i in range(len(unlabeled_train_loader.dataset)):
                 probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
                 
-                
+                if seletion_strategy=='GMM':
+                    distri_unlabel=prob[probb]
+                else:
+                    distri_unlabel=predict_distribution[probb]
                 # print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
                 # logger.info(f'unlabeled : input {prob[probb]} label {label} text {text}')
                 inputs.append(
@@ -214,7 +225,7 @@ class SelfMixTrainer:
                         'index':probb,
                         "label":label,
                         "prob":prob[probb],
-                        "distribution":distri,
+                        "distribution":distri_unlabel,
                         "selection_strategy":seletion_strategy,
                         "noise_ratio":self.model_args.noised_rate,
                         "type":"unlabeled"  
@@ -224,9 +235,11 @@ class SelfMixTrainer:
             import csv
             noise_type = self.model_args.noise_type
             noise_ratio = self.model_args.noised_rate
-            resp_threshold= self.model_args.resp_threshold
+            target_class = self.model_args.target_class
+            replace_class = self.model_args.replace_class
             
-            with open(f'./output/{seletion_strategy}_{noise_type}:{noise_ratio}_{resp_threshold}.csv', 'w', newline='') as csvfile:
+            
+            with open(f'./output/noise_label{target_class}_{replace_class}/{seletion_strategy}_{noise_type}:{noise_ratio}.csv', 'w', newline='') as csvfile:
                 fieldnames = ['input', 'label', 'prob','index','distribution','selection_strategy','noise_ratio','type']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
@@ -393,19 +406,14 @@ class SelfMixTrainer:
                     loss_i = loss_i.tolist()
                     raw_loss = loss_i.copy()
                     correct_label = true_labels[i]
-                    print("correct_label",correct_label)
+                    
                     correct_score = raw_loss[correct_label]
                     
                     loss_i.pop(correct_label)  
                     new_df = list(loss_i)
-                    
-                    print("correct_score",correct_score)
-                    print("raw_ds",raw_loss,'new_ds',new_df)
-                    print(max(new_df))
-                    print("repans",correct_score-max(new_df))
-                    # print('loss_i',len(loss_new),max(loss_new))
-                    # loss_i = sorted(loss_i,reverse=True)
+                
                     raw_disribution.append(raw_loss)
+                    
                     losses.append(correct_score-max(new_df))
         losses = np.array(losses)    
         # stop here

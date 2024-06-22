@@ -98,6 +98,16 @@ class ModelArguments:
         default=str,
         metadata={"help": "The threshold for responsibility"}
     )
+    # noise class
+    target_class: Optional[int] = field(
+        default=1,
+        metadata={"help": "The target class"}
+    )
+    replace_class: Optional[int] = field(
+        default=0,
+        metadata={"help": "The number of classes"}
+        
+    )
 
 @dataclass
 class DataTrainingArguments:
@@ -230,10 +240,14 @@ def main():
         model_args=model_args,
         training_args=training_args
     )
-    # if os.path.exists("output"):
-    #     os.makedirs("output")
-    # if os.path.exists("save_model"):
-    #     os.makedirs("save_model")    
+    # not exist dir
+    
+    if not os.path.exists("output"):
+        os.makedirs("output")
+    if not os.path.exists(f"output/noise_label{model_args.target_class}_{model_args.replace_class}"):
+        os.makedirs(f"output/noise_label{model_args.target_class}_{model_args.replace_class}")
+    if not os.path.exists("save_model"):
+        os.makedirs("save_model") 
     # train and eval
     trainer.warmup()
     trainer.train()

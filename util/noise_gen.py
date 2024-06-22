@@ -1,6 +1,8 @@
 import numpy as np
 from sklearn.utils.multiclass import unique_labels
 import random
+import torch
+
 def get_sorted_idx(probs, labels, class_id=None):
     '''
     Returns indices of samples beloning to class_id. Indices are sorted according to probs. First one is least confidently class_id
@@ -87,18 +89,45 @@ def noise_softmax(x_train, y_train_int, probs, noise_ratio):
     return y_noisy, probs
 
 
+# def noise_gen_simple(logits ,init_label, noise_ratio):
+#     # 获取预测的噪声标记
+#     noise_label = np.argmax(logits, axis=1)
+     # # 计算要替换的真实标记的数量（20%）
+    # num_elements_to_replace = int(noise_ratio* len(init_label))
+
+    # # 随机选择索引进行替换
+    # indices_to_replace = random.sample(range(len(init_label)), num_elements_to_replace)
+
+    # # 替换部分真实标记为噪声标记
+    # modified_true_label = init_label.copy()
+    # for index in indices_to_replace:
+    #     modified_true_label[index] = noise_label[index]
+    # return modified_true_label
 def noise_gen_simple(logits ,init_label, noise_ratio):
     # 获取预测的噪声标记
     noise_label = np.argmax(logits, axis=1)
+    return noise_label
 
-    # 计算要替换的真实标记的数量（20%）
-    num_elements_to_replace = int(noise_ratio* len(init_label))
-
-    # 随机选择索引进行替换
-    indices_to_replace = random.sample(range(len(init_label)), num_elements_to_replace)
-
-    # 替换部分真实标记为噪声标记
-    modified_true_label = init_label.copy()
-    for index in indices_to_replace:
-        modified_true_label[index] = noise_label[index]
-    return modified_true_label
+def get_model_logit(initial_data_loader,model,tokenizer,device):
+    '''
+    Converts logits to probabilities using softmax function
+    '''
+    model.eval()
+    preds = []
+    for i in initial_data_loader:
+        input_ids = i['input_ids'].to(device)
+        attention_mask = i['attention_mask'].to(device)
+        labels = i['labels'].to(device)
+        # convert labels to tensor
+        with torch.no_grad():
+            outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
+        logits = outputs.logits
+        probs = torch.nn.functional.softmax(logits, dim=1)
+        # get predicted labels
+        pred = torch.argmax(probs, dim=1)
+        preds.append(probs.cpu().numpy())
+    
+    return preds
+    
+    
+   

@@ -137,3 +137,27 @@ class SelfMixData:
                 shuffle=True,
                 num_workers=2)     
             return labeled_trainloader, unlabeled_trainloader
+        
+        
+class noise_generator_dataset(Dataset):
+    '''
+    the data set we want to generated noisy labels for
+    text: list of texts
+    labels: list of labels
+    tokenizer: tokenizer object
+
+    '''
+    def __init__(self, texts, labels,tokenizer):
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.encodings = tokenizer(texts, truncation=True, padding=True)
+        self.labels = labels
+        self.texts = texts
+
+    def __getitem__(self, idx):
+        item = {key: torch.tensor(val[idx]).to(self.device) for key, val in self.encodings.items()}
+        item['labels'] = torch.tensor(self.labels[idx]).to(self.device)
+        return item
+
+    def __len__(self):
+        return len(self.labels)
+
