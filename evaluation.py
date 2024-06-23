@@ -60,6 +60,16 @@ class ModelArguments:
         default='sym',
         metadata={"help": "The noise type"}
     )
+    # noise class
+    target_class: Optional[int] = field(
+        default=1,
+        metadata={"help": "The target class"}
+    )
+    replace_class: Optional[int] = field(
+        default=0,
+        metadata={"help": "The number of classes"}
+        
+    )
 @dataclass
 class DataEvalArguments:
     """
@@ -108,7 +118,11 @@ def main():
     selfmix_eval_data = SelfMixData(data_args, eval_datasets, tokenizer)
     
     model = Bert4Classify(model_args.pretrained_model_name_or_path, model_args.dropout_rate, eval_num_classes)
-    model.load_model(model_args.model_name_or_path)
+    eval_modelpath = model_args.model_name_or_path
+    
+    model_path = eval_modelpath.replace(".pt", f"{model_args.target_class}_{model_args.replace_class}_.pt")
+    
+    model.load_model(model_path)
     
     tester = SelfMixTrainer(
         model=model,

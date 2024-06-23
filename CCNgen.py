@@ -54,7 +54,7 @@ data4 =  df_sample_i['label'].values
 
 
 # 使用函數替換類別並生成混淆矩陣
-target = 3
+target = 0
 replacement = 2
 preic_10,actual_10,cm_10=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=10)
 
