@@ -134,3 +134,30 @@ Here we list our results in Trec datasets. More information about experiment det
 | -------------- | -------------- | -------------- |
 | Trec(Asym-20%) | 96.32          | 94.12          |
 | Trec(Asym-40%) | 96.04          | 93.80          |
+
+
+## Class Condiction Noise AgNews
+1. Sorurce:Word  Noise:Sport
+![](figure/confusion_matrices0_1.png)
+2. Sorurce:World  Noise:Business
+![](figure/confusion_matrices0_2.png)
+3. Sorurce:World Noise:Sci/Tech
+![](figure/confusion_matrices0_3.png)
+4. Sorurce:Sport Noise:World
+![](figure/confusion_matrices1_0.png)
+5. Sorurce:Sport Noise:Business
+![](figure/confusion_matrices1_2.png)
+6. Sorurce:Sport Noise:Sci/Tech
+![](figure/confusion_matrices1_3.png)
+7. Sorurce:Business Noise:World
+![](figure/confusion_matrices2_0.png)
+8. Sorurce:Business Noise:Sport
+![](figure/confusion_matrices2_1.png)
+9. Sorurce:Business Noise:Sci/Tech
+![](figure/confusion_matrices2_3.png)
+10. Sorurce:Sci/Tech Noise:World
+![](figure/confusion_matrices3_0.png)
+11. Sorurce:Sci/Tech Noise:Sport
+![](figure/confusion_matrices3_1.png)
+12. Sorurce:Sci/Tech Noise:Business
+![](figure/confusion_matrices3_2.png)
