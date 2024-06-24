@@ -56,7 +56,8 @@ selection_strategy_Rep = "Repset"
     # 0.2
 for target in range(4):
     for replace in range(4):
-        if target != replace:
+        
+        if target==2  and target != replace:
             if noise_type  == "CCN":
             
                 
@@ -155,7 +156,6 @@ for target in range(4):
             base_comand_04 = f"python baselines/train_base.py  --train_path {train_file_path_04} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noise_rate_04}"
             list_base_comand = [base_comand_01,base_comand_02,base_comand_03,base_comand_04]
             for i in range(len(list_gmm_train_comand)):
-               
                 gmm_train = list_gmm_train_comand[i]
                 gmm_eval = list_gmm_eval_comand[i]
                 rep_train = list_rep_train_comand[i]

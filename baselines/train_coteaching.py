@@ -17,6 +17,7 @@ from utils.loss import loss_coteaching
 from utils.metric import metric
 import logging
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
     datefmt="%m/%d/%Y %H:%M:%S",
@@ -27,7 +28,10 @@ logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 warnings.filterwarnings('ignore')
 
-
+def matrix (y_true, y_pred):
+    matri=classification_report(y_true, y_pred, target_names=['World', 'Sports', 'Business', 'Sci/Tech'], output_dict=True)
+    return matri
+       
 parser = argparse.ArgumentParser()
 
 ## basic configuration
@@ -248,8 +252,10 @@ def evaluate(valid_data, epoch, model1, model2, mode='Valid'):
         %(epoch+1, EPOCH, val_loss1, val_acc1, val_loss2, val_acc2))
     cm1 = confusion_matrix(true_labels, pred_1_labels)
     cm2 = confusion_matrix(true_labels, pred_2_labels)
-    mean_cm = (cm1 + cm2) / 2
-    logger.info(f'{mode} confusion matrix: {mean_cm}')
+    eval_res = matrix (true_labels, pred_1_labels)
+    
+    logger.info(f'{mode} confusion matrix: {cm1}\n')
+    logger.info(str(eval_res)+"\n")
     return val_acc1, val_acc2
 
 

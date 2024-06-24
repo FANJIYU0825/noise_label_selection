@@ -7,7 +7,7 @@ from torch.optim import Adam
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
-
+import csv
 
 logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
@@ -154,16 +154,27 @@ class SelfMixTrainer:
         noise_type = self.model_args.noise_type
         target_class = self.model_args.target_class
         replace_class = self.model_args.replace_class
+        stragegy_ratio = f'{selecting_strategy}_{noise_ratio}'
         with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.txt', 'a') as f:
             
-            f.write(f'\nEval Results: {noise_type}+{selecting_strategy}+{noise_ratio}')
+            f.write(f'\nEval Results: {noise_type}+{stragegy_ratio}')
             f.write("\n"+evaluation_results )
             f.write("\n"+str(eval_matrix))
-        
-            
+        # open csv 
+        with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.csv', 'a', newline='') as csvfile:
+            # eval_matrix IS micor confusion matrix 4 class
+            fieldnames = ['class', 'precision', 'recall','f1-score','support','noise_type','noise_ratio','selection_strategy']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for key in eval_matrix.keys():
+                writer.writerow({'class': key, 'precision': eval_matrix[key]['precision'], 'recall': eval_matrix[key]['recall'],'f1-score':eval_matrix[key]['f1-score'],'support':eval_matrix[key]['support'],
+                                 'noise_type':noise_type,'noise_ratio':noise_ratio,'selection_strategy':selecting_strategy})
+                                 
+          
             
             
     def train(self):
+          
         logger.info("***** Mixup Train *****")       
 
         train_loader = self.train_data.run("all")
@@ -172,28 +183,30 @@ class SelfMixTrainer:
         for epoch_id in range(1, self.training_args.train_epochs + 1):
             seletion_strategy = self.model_args.selection_strategy
             if seletion_strategy=='GMM':
-                prob = self._eval_samples(train_loader)
+                prob,predict_distribution,diffculty,indexs = self._eval_samples(train_loader)
                 pred = (prob > self.model_args.p_threshold)
-                predict_distribution=None
+                
             else:
                 
-                prob,predict_distribution = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
+                prob,predict_distribution,diffculty,indexs = self._eval_samples(train_loader)
+                #  prob,predict_distribution = self._eval_samples_repesentive(train_loader,tamplate_tokenizer=self.model_args.token_representation)
                 
                 
-                
-                pred = (prob >0)
+                pred = (diffculty >0)
             
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
-            # return input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index] # return of labeled
+            #  input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index] # return of labeled
             inputs = []
             for i in range(len(labeled_train_loader.dataset)):
                 probb,label,text =labeled_train_loader.dataset[i][3],labeled_train_loader.dataset[i][2],labeled_train_loader.dataset[i][5]
                 index_of_data = labeled_train_loader.dataset[i][4]
+                ir_index=indexs.index(index_of_data)
                 if seletion_strategy=='GMM':
-                    distri=prob[int(index_of_data)]
+                    
+                    distri=predict_distribution[ir_index]
                 else:
                     
-                    distri=predict_distribution[int(index_of_data)] 
+                    distri=predict_distribution[ir_index] 
                     
                     
                 # print(f'labeled :input {probb} label {label} text {text}')
@@ -201,34 +214,40 @@ class SelfMixTrainer:
                     {
                         "input":text,
                         "label":label,
-                        "prob":probb,
+                        "prob":prob[ir_index],
                         "index":index_of_data,
                         "distribution":distri,
                         "selection_strategy":seletion_strategy,
                         "noise_ratio":self.model_args.noised_rate,
-                        "type":"labeled"
+                        "type":"labeled",
+                        "difficulty":diffculty[ir_index]
+        
                     }
                 )
            
             for i in range(len(unlabeled_train_loader.dataset)):
                 probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
-                
+                ir_unlabel_index=indexs.index(probb)
                 if seletion_strategy=='GMM':
-                    distri_unlabel=prob[probb]
+                    
+                    distri_unlabel=predict_distribution[ir_unlabel_index]
                 else:
-                    distri_unlabel=predict_distribution[probb]
+                    distri_unlabel=predict_distribution[ir_unlabel_index]
+                    
                 # print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
                 # logger.info(f'unlabeled : input {prob[probb]} label {label} text {text}')
+                
                 inputs.append(
                       
                     {  "input":text,
                         'index':probb,
                         "label":label,
-                        "prob":prob[probb],
+                        "prob":prob[ir_unlabel_index],
                         "distribution":distri_unlabel,
                         "selection_strategy":seletion_strategy,
                         "noise_ratio":self.model_args.noised_rate,
-                        "type":"unlabeled"  
+                        "type":"unlabeled"  ,
+                        "difficulty":diffculty[ir_unlabel_index]
                     }
                 )  
             # csv writer 
@@ -238,9 +257,10 @@ class SelfMixTrainer:
             target_class = self.model_args.target_class
             replace_class = self.model_args.replace_class
             
-            
-            with open(f'./output/noise_label{target_class}_{replace_class}/{seletion_strategy}_{noise_type}:{noise_ratio}.csv', 'w', newline='') as csvfile:
-                fieldnames = ['input', 'label', 'prob','index','distribution','selection_strategy','noise_ratio','type']
+            csv_path= f'./output/noise_label{target_class}_{replace_class}/{seletion_strategy}_{noise_type}:{noise_ratio}.csv'
+            print('csv_path',csv_path)
+            with open(csv_path, 'w', newline='') as csvfile:
+                fieldnames = ['input', 'label', 'prob','index','distribution','selection_strategy','noise_ratio','type','difficulty']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i in inputs:
@@ -333,12 +353,37 @@ class SelfMixTrainer:
         self.model.eval()
         
         loss_func = nn.CrossEntropyLoss(reduction='none')
+        distribution = []
+        difficulty = []
+        indexs = []
         losses = np.zeros(len(eval_loader.dataset))
         with torch.no_grad():
             for i, data in enumerate(eval_loader):
                 input_ids, att_mask, labels, index = [Variable(elem.cuda()) for elem in data] 
+                
                 outputs = self.model(input_ids, att_mask) 
                 pred = torch.softmax(outputs, dim=-1)
+                for i in range(len(pred)):
+                    loss_i = pred[i]
+                    loss_i = loss_i.tolist()
+                    distribution.append(loss_i)
+                    indexs.append(index[i].item())
+                    correct_label = labels[i]
+                    correct_score = loss_i[correct_label]
+                    # print('correct_label',correct_label)
+                    if correct_label == 0:
+                        front_number=loss_i[1:]
+                        back_number= [0]
+                        value_exclude_correct_label = front_number+back_number
+                    else:
+                        front_number=loss_i[:correct_label]
+                        back_number=loss_i[correct_label+1:]
+                        
+                        value_exclude_correct_label = front_number+back_number
+                    difficulty.append(correct_score-max(value_exclude_correct_label))
+                    
+                        
+                        
                 loss = loss_func(pred, labels).cpu().detach().numpy()
                 index = index.long().cpu().detach().numpy()
                 losses[index] = loss
@@ -361,7 +406,8 @@ class SelfMixTrainer:
         gmm.fit(losses)
         prob = gmm.predict_proba(losses) 
         prob = prob[:,gmm.means_.argmin()]
-        return prob
+        difficulty = np.array(difficulty) 
+        return prob,distribution,difficulty,indexs
     def _eval_samples_repesentive(self, eval_loader,tamplate_tokenizer):
         """
         Sample selection
@@ -389,36 +435,51 @@ class SelfMixTrainer:
                 label_reps = label_outputs.mean(dim=1)  # Mean pooling
                 input_ids, att_mask, labels, index = [Variable(elem.cuda()) for elem in data] 
                 outputs = self.model(input_ids, att_mask) 
-                # print('outputs ',outputs.shape)
+                pred = torch.softmax(outputs, dim=-1)
                 # outputs = F.normalize(outputs, p=2, dim=1)
                 # news_embeddings =outputs.mean(dim=1)  # Mean pooling
                 
-                similarities = F.cosine_similarity(label_outputs.unsqueeze(0), outputs.unsqueeze(1), dim=2)
-                # soft_max
-                similarities = F.softmax(similarities/0.1, dim=1)
+                # similar`ities = F.cosine_similarity(label_outputs.unsqueeze(0), outputs.unsqueeze(1), dim=2)
+                # # soft_max
+                # similarities = F.softmax(similarities/0.1, dim=1)
                 
-                loss = similarities.cpu().detach().numpy()
+                # loss = similarities.cpu().detach().numpy()
                 true_labels = labels.cpu().detach().numpy()
                 # loss  similarites big largest
                 
-                for i in range(len(loss)):
-                    loss_i = loss[i]
+                for i in range(len(pred)):
+                    loss_i = pred[i]
                     loss_i = loss_i.tolist()
                     raw_loss = loss_i.copy()
                     correct_label = true_labels[i]
-                    
-                    correct_score = raw_loss[correct_label]
-                    
-                    loss_i.pop(correct_label)  
-                    new_df = list(loss_i)
+                    if correct_label == 0:
+                        
+                        correct_score = raw_loss[correct_label]
+                        front_number=raw_loss[1:]
+                        back_number=[]
+                        value_exclude_correct_label =front_number+back_number
+                    elif correct_label==2:
+                        correct_score = raw_loss[correct_label]
+                        front_number=raw_loss[:2]
+                        back_number=raw_loss[2+1:]
+                        value_exclude_correct_label = front_number+back_number
+                    else:
+                        correct_score = raw_loss[correct_label]
+                        front_number=raw_loss[:correct_label]
+                        back_number=raw_loss[correct_label+1:]
+                        value_exclude_correct_label = front_number+back_number
+                    # loss_i.pop(correct_label)  
+                    # new_df = list(loss_i)
                 
                     raw_disribution.append(raw_loss)
                     
-                    losses.append(correct_score-max(new_df))
+                    losses.append(correct_score-max(value_exclude_correct_label))
+                    
+                        
         losses = np.array(losses)    
         # stop here
         return losses,raw_disribution
-    def _eval_samples_protype(self, eval_loader,tamplate_tokenizer):
+    def _eval_samples_protoype(self, eval_loader,tamplate_tokenizer):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         with torch.no_grad():
             for i, data in enumerate(eval_loader):  
@@ -429,4 +490,7 @@ class SelfMixTrainer:
                 outputs
                 
     def save_model(self):
-        self.model.save_model(self.training_args.model_save_path)
+        model_path = self.training_args.model_save_path
+        # print('model_path',model_path)
+        model_path = model_path.replace(".pt", f"{self.model_args.target_class}_{self.model_args.replace_class}_.pt")
+        self.model.save_model(model_path)

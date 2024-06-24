@@ -15,7 +15,7 @@ from preprocess.read_data import *
 from utils.common import *
 from utils.metric import *
 import logging
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, classification_report
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
     datefmt="%m/%d/%Y %H:%M:%S",
@@ -47,8 +47,9 @@ parser.add_argument('--sentence_len',type=int,default=256)
 parser.add_argument('--num_class',type=int,default=10)
 parser.add_argument('--learning_rate',type=float,default=1e-5)
 parser.add_argument('--dropout_rate',type=float,default=0.1)
+parser.add_argument('--target_class',type=int,default=1)
+parser.add_argument('--replace_class',type=int,default=0)
 
-## args for model
 parser.add_argument('--train_aug', type=bool, default=False,
     help='whether to use augement data')
 parser.add_argument('--bert_type',type=str,default='bert-base-uncased')
@@ -178,6 +179,8 @@ def evaluate(data, epoch, mymodel, mode):
     acc /= len(data.dataset)
     recall /= len(data.dataset)
     cm = confusion_matrix(true_labels, pred_labels)
+    eval_res=classification_report(true_labels, pred_labels, target_names=['World', 'Sports', 'Business', 'Sci/Tech'], output_dict=True)
+    logger.info(str(eval_res)+"\n")
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), mode, " %d/%d epochs Loss:%f, Acc:%f, Recall:%f" \
     %(epoch, EPOCH, loss , acc , recall))
     logger.info(f"{cm}")
