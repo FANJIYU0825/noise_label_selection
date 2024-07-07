@@ -5,7 +5,8 @@ from sklearn.metrics import confusion_matrix
 import os
 import pandas as pd
 df_sample = pd.read_csv('data/ag_news_train_clean_sample.csv')
-
+# ramdom seed
+np.random.seed(42)
 def replace_and_visualize_confusion_matrix(data, target_class, replacement_class, num_replacements):
     # 找出目標類別的索引
     target_indices = np.where(data == target_class)[0]
@@ -54,8 +55,11 @@ data4 =  df_sample_i['label'].values
 
 
 # 使用函數替換類別並生成混淆矩陣
-target = 0
-replacement = 2
+target = 2
+replacement = 0
+# 0 
+preic_0 ,actual_0,cm_0=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=0)
+#10,20,30,40
 preic_10,actual_10,cm_10=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=10)
 
 preic_20,actual_20,cm_20=replace_and_visualize_confusion_matrix(data2, target_class=target, replacement_class=replacement, num_replacements=20)
@@ -63,22 +67,25 @@ preic_20,actual_20,cm_20=replace_and_visualize_confusion_matrix(data2, target_cl
 preic_30,actual_30,cm_30=replace_and_visualize_confusion_matrix(data3, target_class=target, replacement_class=replacement, num_replacements=30)
 
 preic_40,actual_40,cm_40=replace_and_visualize_confusion_matrix(data4, target_class=target, replacement_class=replacement, num_replacements=40)
+print(preic_0,actual_0)
+# plot_multiple_confusion_matrices([cm_0,cm_10, cm_20, cm_30, cm_40], ['0_Replacements','10 Replacements', '20 Replacements', '30 Replacements', '40 Replacements'],target,replacement)
 
-plot_multiple_confusion_matrices([cm_10, cm_20, cm_30, cm_40], ['10 Replacements', '20 Replacements', '30 Replacements', '40 Replacements'],target,replacement)
-
-cnn_10 = gen_ccn(df_sample,preic_10)
-cnn_10 = cnn_10 [['label','text']]
-cnn_20 = gen_ccn(df_sample,preic_20)
-cnn_20 = cnn_20 [['label','text']]
-cnn_30 = gen_ccn(df_sample,preic_30)
-cnn_30 = cnn_30 [['label','text']]
-cnn_40 = gen_ccn(df_sample,preic_40)
-cnn_40 = cnn_40 [['label','text']]
+ccn_0 = gen_ccn(df_sample,preic_0)
+ccn_0 = df_sample [['label','text']]
+ccn_10 = gen_ccn(df_sample,preic_10)
+ccn_10 = ccn_10 [['label','text']]
+ccn_20 = gen_ccn(df_sample,preic_20)
+ccn_20 = ccn_20 [['label','text']]
+ccn_30 = gen_ccn(df_sample,preic_30)
+ccn_30 = ccn_30 [['label','text']]
+ccn_40 = gen_ccn(df_sample,preic_40)
+ccn_40 = ccn_40 [['label','text']]
 if os.path.exists(f'data/agnews{target}') == False:
     os.makedirs(f'data/agnews{target}')
-    
-cnn_10.to_csv(f'data/agnews{target}/ag_news_ccn_sample10_label:t{target}to{replacement}.csv', index=False,header=False)
-cnn_20.to_csv(f'data/agnews{target}/ag_news_ccn_sample20_label:t{target}to{replacement}.csv', index=False,header=False)
-cnn_30.to_csv(f'data/agnews{target}/ag_news_ccn_sample30_label:t{target}to{replacement}.csv', index=False,header=False)
-cnn_40.to_csv(f'data/agnews{target}/ag_news_ccn_sample40_label:t{target}to{replacement}.csv', index=False,header=False)
+
+ccn_0.to_csv(f'data/agnews{target}/ag_news_ccn_sample0_label:t{target}to{replacement}.csv', index=False,header=False)   
+ccn_10.to_csv(f'data/agnews{target}/ag_news_ccn_sample10_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_20.to_csv(f'data/agnews{target}/ag_news_ccn_sample20_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_30.to_csv(f'data/agnews{target}/ag_news_ccn_sample30_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_40.to_csv(f'data/agnews{target}/ag_news_ccn_sample40_label:t{target}to{replacement}.csv', index=False,header=False)
 
