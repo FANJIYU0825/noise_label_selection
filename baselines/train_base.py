@@ -15,6 +15,9 @@ from preprocess.read_data import *
 from utils.common import *
 from utils.metric import *
 import logging
+import matplotlib.pyplot as plt
+import csv
+import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
@@ -91,9 +94,9 @@ def train(args, mymodel, optimizer, train_data, valid_data=None, test_data=None)
     
     test_best_l = []
     test_last_l = []
-    
+    cm_epoch =[]
     test_best = 0.0
-
+    evaluatino_mtx =[]
     # evaluate(valid_loader, 0, mymodel, 'valid before train')
 
     for epoch in range(1, EPOCH + 1):
@@ -145,13 +148,14 @@ def train(args, mymodel, optimizer, train_data, valid_data=None, test_data=None)
             _, val_acc = evaluate(valid_data, epoch, mymodel, 'valid')
 
         if test_data:
-            _, test_last = evaluate(test_data, epoch, mymodel, 'test')
+            cm,eval_m ,test_last = evaluate(test_data, epoch, mymodel, 'test')
             test_best = max(test_best,test_last)
 
             test_best_l.append(test_best)
             test_last_l.append(test_last)
-        
-    return test_best_l, test_last_l
+            cm_epoch.append(cm)
+            evaluatino_mtx.append(eval_m)
+    return test_best_l, test_last_l, cm_epoch, evaluatino_mtx
 
 def evaluate(data, epoch, mymodel, mode):
     loss = 0.0
@@ -184,6 +188,8 @@ def evaluate(data, epoch, mymodel, mode):
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), mode, " %d/%d epochs Loss:%f, Acc:%f, Recall:%f" \
     %(epoch, EPOCH, loss , acc , recall))
     logger.info(f"{cm}")
+    if mode == 'test':
+        return cm,eval_res, acc
     return loss, acc
 
 mymodel=Bert4Classify(args)
@@ -191,11 +197,32 @@ mymodel=torch.nn.DataParallel(mymodel).cuda()
 
 optimizer=optim.Adam(mymodel.parameters(),lr=args.learning_rate)
 
-test_best_l, test_last_l = train(args, mymodel, optimizer, train_loader, test_data=test_loader)
-
+test_best_l, test_last_l,cm,eval_mx = train(args, mymodel, optimizer, train_loader, test_data=test_loader)
+print('cm',cm)
+#  I want fig this cm   
+cm=cm [-1]
+eval_mx = eval_mx[-1]
+# plot confusion matrix
+plt.figure(figsize=(10,10))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=np.arange(4), yticklabels=np.arange(4))
+plt.xlabel('Predicted Label')
+plt.ylabel('Actual Label')
+plt.title('Confusion Matrix')
+plt.savefig(f'./output/noise_label{args.target_class}_{args.replace_class}/bert base_{args.noise_type}_rate_{args.noise_ratio}_{args.target_class}_{args.replace_class}.png')
 print('test_best',test_best_l)
 print('test_last',test_last_l)
 logger.info(f'methd: bert base_{args.noise_type}_rate_{args.noise_ratio}')
 logger.info('test_best %s'%test_best_l, 'test_last %s'%test_last_l)
 print("Test best %f , last %f"%(test_best_l[-1], test_last_l[-1]))
 logger.info("Test best %f , last %f"%(test_best_l[-1], test_last_l[-1]))
+# csv file
+
+with open('evaluation_bert_base.csv', 'a', newline='') as file:
+    
+    writer = csv.writer(file)
+    if file.tell() == 0:
+        writer.writerow(['method','test_best','test_last','noise_ratio','noise_type','target_class','replace_class','world_P','world_R','world_F1','sports_P','sports_R','sports_F1','business_P','business_R','business_F1','sci_P','sci_R','sci_F1'])
+    # header
+    # four class 
+    # I don't want to write the header every time I run the code
+    writer.writerow(['bert base',test_best_l[-1],test_last_l[-1],args.noise_ratio,args.noise_type,args.target_class,args.replace_class,eval_mx['World']['precision'],eval_mx['World']['recall'],eval_mx['World']['f1-score'],eval_mx['Sports']['precision'],eval_mx['Sports']['recall'],eval_mx['Sports']['f1-score'],eval_mx['Business']['precision'],eval_mx['Business']['recall'],eval_mx['Business']['f1-score'],eval_mx['Sci/Tech']['precision'],eval_mx['Sci/Tech']['recall'],eval_mx['Sci/Tech']['f1-score']])
