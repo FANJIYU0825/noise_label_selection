@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report,confusion_matrix 
 from sklearn.mixture import GaussianMixture
 import os, logging, warnings
 import torch
@@ -8,7 +8,8 @@ from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
 import csv
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 warnings.filterwarnings('ignore')
@@ -28,7 +29,13 @@ def metric(y_true, y_pred):
 def matrix (y_true, y_pred):
     matri=classification_report(y_true, y_pred, target_names=['World', 'Sports', 'Business', 'Sci/Tech'], output_dict=True)
     return matri
-       
+def plot_confusion_matrix(cm,args):
+    plt.figure(figsize=(10,10))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=np.arange(4), yticklabels=np.arange(4))
+    plt.xlabel('Predicted Label')
+    plt.ylabel('Actual Label')
+    plt.title('Confusion Matrix')   
+    plt.savefig(f'./output/noise_label{args.target_class}_{args.replace_class}/self_mix_{args.noise_type}_rate_{args.noised_rate}_{args.target_class}_{args.replace_class}.png')
 def compute_kl_loss(p, q, pad_mask=None):
     
     p_loss = F.kl_div(F.log_softmax(p, dim=-1), F.softmax(q, dim=-1), reduction='none')
@@ -142,19 +149,26 @@ class SelfMixTrainer:
             y_true[index] = val_labels
             y_pred[index] = pred
             
-        eval_res = metric(y_true, y_pred)
-        logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
-            .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
-        evaluation_results = "Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}".format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1'])
-        eval_matrix = matrix(y_true, y_pred)
-        logger.info(eval_matrix)
         
+        
+        # evalution matrix of marco
+        eval_res = metric(y_true, y_pred)
+        # classification report micor
+        eval_matrix = matrix(y_true, y_pred)
+        # confusion matrix
+        cm = confusion_matrix(y_true, y_pred)
+        logger.info(eval_matrix)
+        plot_confusion_matrix(cm,self.model_args)
         selecting_strategy=self.model_args.selection_strategy 
         noise_ratio = self.model_args.noised_rate
         noise_type = self.model_args.noise_type
         target_class = self.model_args.target_class
         replace_class = self.model_args.replace_class
         stragegy_ratio = f'{selecting_strategy}_{noise_ratio}'
+        logger.info("Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}"
+            .format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1']))
+        evaluation_results = "Eval Results: Accuracy: {:.2%}, Precision: {:.2%}, Recall: {:.2%}, F1: {:.2%}".format(eval_res['accuracy'], eval_res['precision'], eval_res['recall'], eval_res['f1'])
+        
         with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.txt', 'a') as f:
             
             f.write(f'\nEval Results: {noise_type}+{stragegy_ratio}')
@@ -162,7 +176,7 @@ class SelfMixTrainer:
             f.write("\n"+str(eval_matrix))
         # open csv 
         with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.csv', 'a', newline='') as csvfile:
-            # eval_matrix IS micor confusion matrix 4 class
+            # eval_matrix is micor confusion matrix 4 class
             
             fieldnames = ['class', 'precision', 'recall','f1-score','support','noise_type','noise_ratio','selection_strategy']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

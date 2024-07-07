@@ -57,9 +57,14 @@ selection_strategy_Rep = "Repset"
 for target in range(4):
     for replace in range(4):
         
-        if target==2  and target != replace:
+        if target==2  and replace==0:
             if noise_type  == "CCN":
             
+                # here is 0.0
+                noise_rate_0 = 0.0
+                train_file_path_00= f"./data/agnews{target}/ag_news_ccn_sample0_label:t{target}to{replace}.csv"
+                model_save_path_GMM00 = "./save_model/CCN-selfmix_agnews_GMM_0.0.pt"
+                
                 
                 # from 0.1 to 0.4
                 train_file_path_01= f"./data/agnews{target}/ag_news_ccn_sample10_label:t{target}to{replace}.csv"
@@ -123,7 +128,8 @@ for target in range(4):
                 os.system(train_comand_rep_clean)
                 os.system(eval_comand_GMM_clean)
                 os.system(eval_comand_rep_clean)
-            
+            train_comand_GMM00 =f'python train.py --target_class  {target}  --replace_class {replace} --noise_type {noise_type} --noised_rate {noise_rate_0}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_GMM} --dataset_name {dataset_name} --train_file_path {train_file_path_00} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_GMM00}'
+            eval_comand_GMM00 = f'python evaluation.py --target_class  {target}  --replace_class {replace} --noise_type {noise_type}  --noised_rate {noise_rate_0}  --model_name_or_path {model_save_path_GMM00} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_GMM}'
             train_comand_GMM01 =f'python train.py --target_class  {target}  --replace_class {replace} --noise_type {noise_type} --noised_rate {noised_rate_01}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_GMM} --dataset_name {dataset_name} --train_file_path {train_file_path_01} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_GMM01}'    
             eval_comand_GMM01 = f"python evaluation.py --target_class {target} --replace_class {replace} --noise_type {noise_type } --noised_rate {noised_rate_01}  --model_name_or_path {model_save_path_GMM01} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_GMM}"
             train_comand_GMM02 = f"python train.py --target_class  {target} --replace_class {replace} --noise_type {noise_type}  --noised_rate {noised_rate_02}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_GMM} --dataset_name {dataset_name} --train_file_path {train_file_path_02} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_GMM02}"
@@ -133,9 +139,9 @@ for target in range(4):
 
             train_comand_GMM_04=f"python train.py --target_class  {target} --replace_class {replace} --noise_type {noise_type} --noised_rate {noise_rate_04}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_GMM} --dataset_name {dataset_name} --train_file_path {train_file_path_04} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_GMM_04}"
             eval_comand_GMM04 = f"python evaluation.py --target_class  {target} --replace_class {replace} --noise_type {noise_type}  --noised_rate {noise_rate_04}  --model_name_or_path {model_save_path_GMM_04} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_GMM}"
-            list_gmm_train_comand = [train_comand_GMM01,train_comand_GMM02,train_comand_GMM03,train_comand_GMM_04]
-            list_gmm_eval_comand = [eval_comand_GMM01,eval_comand_GMM02,eval_comand_GMM03,eval_comand_GMM04]
-
+            list_gmm_train_comand = [train_comand_GMM00,train_comand_GMM01,train_comand_GMM02,train_comand_GMM03,train_comand_GMM_04]
+            list_gmm_eval_comand = [eval_comand_GMM00,eval_comand_GMM01,eval_comand_GMM02,eval_comand_GMM03,eval_comand_GMM04]
+            
             train_comand_rep_01 = f'python train.py --target_class  {target} --replace_class {replace} --noise_type {noise_type}  --noised_rate {noised_rate_01}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_01} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_01}'
             eval_comand_rep_01 = f"python evaluation.py --target_class  {target} --replace_class {replace} --noise_type {noise_type}  --noised_rate {noised_rate_01}  --model_name_or_path {model_save_path_rep_01} --pretrained_model_name_or_path {pretrained_model_name_or_path} --eval_file_path {eval_file_path} --dataset_name {dataset_name} --batch_size {batch_size}  --selection_strategy {selection_strategy_Rep}"
             train_comand_rep_02 =f'python train.py --target_class  {target} --replace_class {replace} --noise_type {noise_type}  --noised_rate {noised_rate_02}  --pretrained_model_name_or_path {pretrained_model_name_or_path} --dropout_rate {dropout_rate} --p_threshold {p_threshold} --temp {temp} --alpha {alpha} --lambda_p {lambda_p} --lambda_r {lambda_r} --class_reg {class_reg} --selection_strategy {selection_strategy_Rep} --dataset_name {dataset_name} --train_file_path {train_file_path_02} --eval_file_path {eval_file_path} --batch_size {batch_size} --batch_size_mix {batch_size_mix} --max_sentence_len {max_sentence_len} --seed {seed} --warmup_strategy {warmup_strategy} --warmup_samples {warmup_samples} --train_epochs {train_epochs} --grad_acc_steps {grad_acc_steps} --model_save_path {model_save_path_rep_02}'
@@ -150,22 +156,25 @@ for target in range(4):
             list_rep_eval_comand = [eval_comand_rep_01,eval_comand_rep_02,eval_comand_rep_03,eval_comand_rep_04]
 
             # Base 
-            base_comand_01 = f"python baselines/train_base.py  --train_path {train_file_path_01} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_01}"
-            base_comand_02 = f"python baselines/train_base.py  --train_path {train_file_path_02} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_02}"
-            base_comand_03 = f"python baselines/train_base.py  --train_path {train_file_path_03} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_03}"
-            base_comand_04 = f"python baselines/train_base.py  --train_path {train_file_path_04} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noise_rate_04}"
-            list_base_comand = [base_comand_01,base_comand_02,base_comand_03,base_comand_04]
-            for i in range(len(list_gmm_train_comand)):
+            base_comand_00 = f"python baselines/train_base.py  --train_path {train_file_path_00} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noise_rate_0} --target_class {target_class} --replace_class {replace_class}"
+            base_comand_01 = f"python baselines/train_base.py  --train_path {train_file_path_01} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_01} --target_class {target_class} --replace_class {replace_class}"
+            base_comand_02 = f"python baselines/train_base.py  --train_path {train_file_path_02} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_02} --target_class {target_class} --replace_class {replace_class}"
+            base_comand_03 = f"python baselines/train_base.py  --train_path {train_file_path_03} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noised_rate_03} --target_class {target_class} --replace_class {replace_class}"
+            base_comand_04 = f"python baselines/train_base.py  --train_path {train_file_path_04} --test_path {eval_file_path} --noise_type {noise_type} --noise_ratio {noise_rate_04} --target_class {target_class} --replace_class {replace_class}"
+            list_base_comand = [base_comand_00,base_comand_01,base_comand_02,base_comand_03,base_comand_04]
+            for i in range(len(list_base_comand)):
                 gmm_train = list_gmm_train_comand[i]
                 gmm_eval = list_gmm_eval_comand[i]
-                rep_train = list_rep_train_comand[i]
-                rep_eval = list_rep_eval_comand[i]
+                # rep_train = list_rep_train_comand[i]
+                # rep_eval = list_rep_eval_comand[i]
                 os.system(gmm_train)
                 os.system(gmm_eval)
-                os.system(rep_train)
-                os.system(rep_eval)
-                base_train = list_base_comand[i]
-                os.system(base_train)
+                # os.system(rep_train)
+                # os.system(rep_eval)
+                
+                # base_train = list_base_comand[i]
+                # print(base_train)
+                # os.system(base_train)
 
  
 
