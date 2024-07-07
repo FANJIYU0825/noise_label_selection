@@ -163,9 +163,11 @@ class SelfMixTrainer:
         # open csv 
         with open(f'./output/noise_label{target_class}_{replace_class}/{selecting_strategy}.csv', 'a', newline='') as csvfile:
             # eval_matrix IS micor confusion matrix 4 class
+            
             fieldnames = ['class', 'precision', 'recall','f1-score','support','noise_type','noise_ratio','selection_strategy']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
+            if csvfile.tell() == 0:
+                writer.writeheader()
             for key in eval_matrix.keys():
                 writer.writerow({'class': key, 'precision': eval_matrix[key]['precision'], 'recall': eval_matrix[key]['recall'],'f1-score':eval_matrix[key]['f1-score'],'support':eval_matrix[key]['support'],
                                  'noise_type':noise_type,'noise_ratio':noise_ratio,'selection_strategy':selecting_strategy})
