@@ -119,6 +119,11 @@ class DataTrainingArguments:
         default=None,
         metadata={"help": "Name of dataset"}
     )
+    clean_train_file_path: Optional[str] = field(
+        default=None,
+        metadata={"help": "The clean train data file (.csv)"}
+    )
+    # clean_train_file_path
     train_file_path: Optional[str] = field(
         default=None,
         metadata={"help": "The train data file (.csv)"}
@@ -214,7 +219,8 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # load data
     logging.info(f"selection_strategy:{model_args.selection_strategy}: noised_rate:{model_args.noised_rate} noise_type:{model_args.noise_type}")
-    
+   
+    clean_train_datasets, clean_train_num_classes = load_dataset(data_args.clean_train_file_path, data_args.dataset_name)
     train_datasets, train_num_classes = load_dataset(data_args.train_file_path, data_args.dataset_name)
     eval_datasets, eval_num_classes = load_dataset(data_args.eval_file_path, data_args.dataset_name)
     assert train_num_classes == eval_num_classes
@@ -223,6 +229,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_args.pretrained_model_name_or_path)
     
     selfmix_train_data = SelfMixData(data_args, train_datasets, tokenizer)
+    selfmix_clean_train_data = SelfMixData(data_args, clean_train_datasets, tokenizer)
     selfmix_eval_data = SelfMixData(data_args, eval_datasets, tokenizer)
     model = Bert4Classify(model_args.pretrained_model_name_or_path, model_args.dropout_rate, model_args.num_classes)
     model = model.to(device)
@@ -238,7 +245,8 @@ def main():
         train_data=selfmix_train_data,
         eval_data=selfmix_eval_data,
         model_args=model_args,
-        training_args=training_args
+        training_args=training_args,
+        clean_train_data=selfmix_clean_train_data,
     )
     # not exist dir
     
