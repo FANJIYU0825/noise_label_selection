@@ -91,7 +91,22 @@ train_loader = MyDataloader(args,train_data).run("all")
 test_loader = MyDataloader(args,test_data).run("all")
 
 def train(args, mymodel, optimizer, train_data, valid_data=None, test_data=None):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    noise_ratio = args.noise_ratio
     
+    if  noise_ratio ==0.1:
+        class_counts = torch.tensor([110, 100, 90, 100], dtype=torch.float).to(device)
+    elif noise_ratio ==0.2:
+        class_counts = torch.tensor([120, 100, 80, 100], dtype=torch.float).to(device)
+    elif noise_ratio ==0.3:
+        class_counts = torch.tensor([130, 100, 70, 100], dtype=torch.float).to(device)
+    elif noise_ratio ==0.4:
+        class_counts = torch.tensor([140, 100, 60, 100], dtype=torch.float).to(device)
+    else:
+        class_counts = torch.tensor([100, 100, 100, 100], dtype=torch.float).to(device)
+    total_counts = class_counts.sum()
+    
+    class_weights = total_counts / class_counts
     test_best_l = []
     test_last_l = []
     cm_epoch =[]
@@ -119,7 +134,7 @@ def train(args, mymodel, optimizer, train_data, valid_data=None, test_data=None)
             logits = mymodel(input_ids, attention_mask, is_training=True)
 
             out = F.log_softmax(logits)
-            loss = F.cross_entropy(logits, labels)
+            loss = F.cross_entropy(logits, labels,weight=class_weights)
 
             train_loss += loss.item()
 
@@ -199,15 +214,17 @@ optimizer=optim.Adam(mymodel.parameters(),lr=args.learning_rate)
 
 test_best_l, test_last_l,cm,eval_mx = train(args, mymodel, optimizer, train_loader, test_data=test_loader)
 print('cm',cm)
-#  I want fig this cm   
+#  we take the last epoch confusion matrix  
 cm=cm [-1]
 eval_mx = eval_mx[-1]
 # plot confusion matrix
 plt.figure(figsize=(10,10))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=np.arange(4), yticklabels=np.arange(4))
+xticklabels=['World', 'Sport', 'Business', 'Tech']
+yticklabels=['World', 'Sport', 'Business', 'Tech']
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=xticklabels, yticklabels=yticklabels)
 plt.xlabel('Predicted Label')
 plt.ylabel('Actual Label')
-plt.title('Confusion Matrix')
+plt.title('Confusion Matrix')   
 plt.savefig(f'./output/noise_label{args.target_class}_{args.replace_class}/bert base_{args.noise_type}_rate_{args.noise_ratio}_{args.target_class}_{args.replace_class}.png')
 print('test_best',test_best_l)
 print('test_last',test_last_l)

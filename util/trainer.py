@@ -31,7 +31,9 @@ def matrix (y_true, y_pred):
     return matri
 def plot_confusion_matrix(cm,args):
     plt.figure(figsize=(10,10))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=np.arange(4), yticklabels=np.arange(4))
+    xticklabels=['World', 'Sport', 'Business', 'Tech']
+    yticklabels=['World', 'Sport', 'Business', 'Tech']
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=xticklabels, yticklabels=yticklabels)
     plt.xlabel('Predicted Label')
     plt.ylabel('Actual Label')
     plt.title('Confusion Matrix')   
@@ -55,19 +57,36 @@ def compute_kl_loss(p, q, pad_mask=None):
 
 
 class SelfMixTrainer:
-    def __init__(self, model, train_data=None, eval_data=None, model_args=None, training_args=None):
+    def __init__(self, model, train_data=None, eval_data=None, model_args=None, training_args=None,clean_train_data=None):
         self.model = model.cuda()
         self.train_data = train_data
+        self.clean_train_data = clean_train_data
         self.eval_data = eval_data
         self.model_args = model_args
         self.training_args = training_args
+        
+       
         if self.training_args is not None:
             self.optimizer = Adam(self.model.parameters(), lr=training_args.lr)
-    
+        noise_ratio = self.model_args.noised_rate
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if  noise_ratio ==0.1:
+            class_counts = torch.tensor([110, 100, 90, 100], dtype=torch.float).to(device)
+        elif noise_ratio ==0.2:
+            class_counts = torch.tensor([120, 100, 80, 100], dtype=torch.float).to(device)
+        elif noise_ratio ==0.3:
+            class_counts = torch.tensor([130, 100, 70, 100], dtype=torch.float).to(device)
+        elif noise_ratio ==0.4:
+            class_counts = torch.tensor([140, 100, 60, 100], dtype=torch.float).to(device)
+        else:
+            class_counts = torch.tensor([100, 100, 100, 100], dtype=torch.float).to(device)
+        total_counts = class_counts.sum()
+        
+        self.class_weights = total_counts / class_counts
     def warmup(self):
         logger.info("***** Warmup stage *****")
         
-        train_loader = self.train_data.run("all")
+        train_loader = self.clean_train_data.run("all")
         if self.training_args.warmup_strategy == "epoch":
             warmup_samples = self.training_args.warmup_epochs * len(train_loader.dataset)
             warmup_epochs = self.training_args.warmup_epochs
@@ -77,8 +96,10 @@ class SelfMixTrainer:
                             int(self.training_args.warmup_samples % len(train_loader.dataset) > 0)
         else:
             warmup_samples, warmup_epochs = 0, 0
-            
-        loss_func = nn.CrossEntropyLoss()
+        
+          
+        loss_func = nn.CrossEntropyLoss(weight=self.class_weights )
+        # loss_func = nn.CrossEntropyLoss()
         now_samples = 0
         for epoch_id in range(1, warmup_epochs + 1):
             # logger.info("***** Warmup epoch %d *****", epoch_id)
@@ -200,7 +221,9 @@ class SelfMixTrainer:
             seletion_strategy = self.model_args.selection_strategy
             if seletion_strategy=='GMM':
                 prob,predict_distribution,diffculty,indexs = self._eval_samples(train_loader)
-                pred = (prob > self.model_args.p_threshold)
+                probmean = np.mean(prob)
+                # change the threshold from 0.5 to mean of prob
+                pred = (prob > probmean)
                 
             else:
                 
@@ -212,7 +235,7 @@ class SelfMixTrainer:
             
             labeled_train_loader, unlabeled_train_loader = self.train_data.run("train", pred, prob)
             #  input_id, att_mask, self.labels[index], self.prob[index], self.pred_idx[index],self.inputs[index] # return of labeled
-            inputs = []
+            inputs_labeled = []
             for i in range(len(labeled_train_loader.dataset)):
                 probb,label,text =labeled_train_loader.dataset[i][3],labeled_train_loader.dataset[i][2],labeled_train_loader.dataset[i][5]
                 index_of_data = labeled_train_loader.dataset[i][4]
@@ -226,7 +249,7 @@ class SelfMixTrainer:
                     
                     
                 # print(f'labeled :input {probb} label {label} text {text}')
-                inputs.append(
+                inputs_labeled.append(
                     {
                         "input":text,
                         "label":label,
@@ -240,7 +263,7 @@ class SelfMixTrainer:
         
                     }
                 )
-           
+            input_unlabeled = []
             for i in range(len(unlabeled_train_loader.dataset)):
                 probb,text,label =unlabeled_train_loader.dataset[i][2],unlabeled_train_loader.dataset[i][-2],unlabeled_train_loader.dataset[i][-1]
                 ir_unlabel_index=indexs.index(probb)
@@ -253,7 +276,7 @@ class SelfMixTrainer:
                 # print(f'unlabeled : input {prob[probb]} label {label} text {text}')   
                 # logger.info(f'unlabeled : input {prob[probb]} label {label} text {text}')
                 
-                inputs.append(
+                input_unlabeled.append(
                       
                     {  "input":text,
                         'index':probb,
@@ -273,14 +296,16 @@ class SelfMixTrainer:
             target_class = self.model_args.target_class
             replace_class = self.model_args.replace_class
             
-            csv_path= f'./output/noise_label{target_class}_{replace_class}/{seletion_strategy}_{noise_type}:{noise_ratio}.csv'
+            csv_path= f'./output/noise_label{target_class}_{replace_class}/epoch_{epoch_id}_{seletion_strategy}_{noise_type}:{noise_ratio}.csv'
             print('csv_path',csv_path)
             with open(csv_path, 'w', newline='') as csvfile:
                 fieldnames = ['input', 'label', 'prob','index','distribution','selection_strategy','noise_ratio','type','difficulty']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
-                for i in inputs:
-                    writer.writerow(i)
+                for x in inputs_labeled:
+                    writer.writerow(x)
+                for u in input_unlabeled:
+                    writer.writerow(u)
             print('select_strategy',seletion_strategy,'noise_type',noise_type,'noise_ratio',noise_ratio)     
             print("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
             logging.info("Labeled: {}, Unlabeled: {}".format(len(labeled_train_loader.dataset), len(unlabeled_train_loader.dataset)))
