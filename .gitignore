@@ -169,3 +169,4 @@ output
 .fuse_hidden*
 
 ag_new_noise
+wandb/
