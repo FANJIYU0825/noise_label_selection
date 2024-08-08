@@ -4,7 +4,10 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix
 import os
 import pandas as pd
-df_sample = pd.read_csv('data/ag_news_train_clean_sample.csv')
+sample_size = 5000
+df_sample = pd.read_csv(f'data/ag_news_train_clean_sample_{sample_size}.csv')
+
+
 # ramdom seed
 np.random.seed(42)
 def replace_and_visualize_confusion_matrix(data, target_class, replacement_class, num_replacements):
@@ -14,10 +17,9 @@ def replace_and_visualize_confusion_matrix(data, target_class, replacement_class
         return data,data,cm
     else:
         target_indices = np.where(data == target_class)[0]
-        # print(target_indices)
+        
         # 隨機選擇指定數量的目標類別索引
-        # indices_to_replace = np.random.choice(target_indices, num_replacements, replace=False)
-        # print(indices_to_replace)
+        
         # 保存原始數據作為實際標籤
         actual_labels = data.copy()
         
@@ -66,13 +68,22 @@ replacement = 0
 # 0 
 preic_0 ,actual_0,cm_0=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=0)
 #10,20,30,40
-preic_10,actual_10,cm_10=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=10)
+num_replacements_10precent = int(sample_size * 0.1)
+num_replacements_20precent = int(sample_size * 0.2)
+num_replacements_30precent = int(sample_size* 0.3)
+num_replacements_40precent = int(sample_size * 0.4)
+a = num_replacements_10precent  
+b = num_replacements_20precent
+c = num_replacements_30precent
+d = num_replacements_40precent
+print(a,b,c,d)
+preic_10,actual_10,cm_10=replace_and_visualize_confusion_matrix(data1, target_class=target, replacement_class=replacement, num_replacements=a)
 
-preic_20,actual_20,cm_20=replace_and_visualize_confusion_matrix(data2, target_class=target, replacement_class=replacement, num_replacements=20)
+preic_20,actual_20,cm_20=replace_and_visualize_confusion_matrix(data2, target_class=target, replacement_class=replacement, num_replacements=b)
 
-preic_30,actual_30,cm_30=replace_and_visualize_confusion_matrix(data3, target_class=target, replacement_class=replacement, num_replacements=30)
+preic_30,actual_30,cm_30=replace_and_visualize_confusion_matrix(data3, target_class=target, replacement_class=replacement, num_replacements=c)
 
-preic_40,actual_40,cm_40=replace_and_visualize_confusion_matrix(data4, target_class=target, replacement_class=replacement, num_replacements=40)
+preic_40,actual_40,cm_40=replace_and_visualize_confusion_matrix(data4, target_class=target, replacement_class=replacement, num_replacements=d)
 
 plot_multiple_confusion_matrices([cm_0,cm_10, cm_20, cm_30, cm_40], ['0_Replacements','10 Replacements', '20 Replacements', '30 Replacements', '40 Replacements'],target,replacement)
 
@@ -86,12 +97,14 @@ ccn_30 = gen_ccn(df_sample,preic_30)
 ccn_30 = ccn_30 [['label','text']]
 ccn_40 = gen_ccn(df_sample,preic_40)
 ccn_40 = ccn_40 [['label','text']]
-# if os.path.exists(f'data/agnews{target}') == False:
-#     os.makedirs(f'data/agnews{target}')
+if os.path.exists(f'data/agnews_{sample_size}{target}') == False:
+    os.makedirs(f'data/agnews_{sample_size}{target}')
 
-# ccn_0.to_csv(f'data/agnews{target}/ag_news_ccn_sample0_label:t{target}to{replacement}.csv', index=False,header=False)   
-# ccn_10.to_csv(f'data/agnews{target}/ag_news_ccn_sample10_label:t{target}to{replacement}.csv', index=False,header=False)
-# ccn_20.to_csv(f'data/agnews{target}/ag_news_ccn_sample20_label:t{target}to{replacement}.csv', index=False,header=False)
-# ccn_30.to_csv(f'data/agnews{target}/ag_news_ccn_sample30_label:t{target}to{replacement}.csv', index=False,header=False)
-# ccn_40.to_csv(f'data/agnews{target}/ag_news_ccn_sample40_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_0.to_csv(f'data/agnews_{sample_size}{target}/ag_news_ccn_sample0_label:t{target}to{replacement}.csv', index=False,header=False)   
+ccn_10.to_csv(f'data/agnews_{sample_size}{target}/ag_news_ccn_sample10_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_20.to_csv(f'data/agnews_{sample_size}{target}/ag_news_ccn_sample20_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_30.to_csv(f'data/agnews_{sample_size}{target}/ag_news_ccn_sample30_label:t{target}to{replacement}.csv', index=False,header=False)
+ccn_40.to_csv(f'data/agnews_{sample_size}{target}/ag_news_ccn_sample40_label:t{target}to{replacement}.csv', index=False,header=False)
+
+
 
