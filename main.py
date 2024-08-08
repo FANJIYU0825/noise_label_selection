@@ -13,7 +13,7 @@ data={
     "class_reg": True,
     "selection_strategy": "GMM",
     "dataset_name": "agnews",
-    "train_file_path": "./data/agnews/agnews_test.csv",
+    "train_file_path": "./data/agnews_{data_size}/agnews_test.csv",
     "eval_file_path": "./data/agnews/agnews_test.csv",
     "batch_size": 4,
     "batch_size_mix": 16,
@@ -27,7 +27,7 @@ data={
     "model_save_path": "./save_model/CCN-selfmix_agnews_GMM_0.2.pt",
     "noise_type":"CCN"
 }
-
+data_size = 5000
 pretrained_model_name_or_path = data["pretrained_model_name_or_path"]
 dropout_rate = data["dropout_rate"]
 p_threshold = data["p_threshold"]
@@ -62,33 +62,33 @@ for target in range(4):
             
                 # here is 0.0
                 noise_rate_0 = 0.0
-                train_file_path_00= f"./data/agnews{target}/ag_news_ccn_sample0_label:t{target}to{replace}.csv"
+                train_file_path_00= f"./data/agnews_{data_size}{target}/ag_news_ccn_sample0_label:t{target}to{replace}.csv"
                 model_save_path_GMM00 = "./save_model/CCN-selfmix_agnews_GMM_0.0.pt"
-                clean_train_file_path_00 = f"./data/agnews{target}/ag_news_without_ccn_sample0_label:t{target}to{replace}.csv"
+                clean_train_file_path_00 = f"./data/agnews_{data_size}{target}/ag_news_without_ccn_sample0_label:t{target}to{replace}.csv"
                 
                 # from 0.1 to 0.4
-                train_file_path_01= f"./data/agnews{target}/ag_news_ccn_sample10_label:t{target}to{replace}.csv"
+                train_file_path_01= f"./data/agnews_{data_size}{target}/ag_news_ccn_sample10_label:t{target}to{replace}.csv"
                 noised_rate_01= 0.1
-                clean_train_file_path_01 = f"./data/agnews{target}/ag_news_without_ccn_sample10_label:t{target}to{replace}.csv"
+                clean_train_file_path_01 = f"./data/agnews_{data_size}{target}/ag_news_without_ccn_sample10_label:t{target}to{replace}.csv"
                 # Rep 0.1
                 model_save_path_rep_01='./save_model/CCN-selfmix_agnews_Rep_0.1.pt'
                 # GMM 0.1
                 model_save_path_GMM01 = "./save_model/CCN-selfmix_agnews_GMM_0.1.pt"
                 
                 # 0.2
-                train_file_path_02= f"./data/agnews{target}/ag_news_ccn_sample20_label:t{target}to{replace}.csv"
+                train_file_path_02= f"./data/agnews_{data_size}{target}/ag_news_ccn_sample20_label:t{target}to{replace}.csv"
                 train_file_path_02
                 noised_rate_02= 0.2
-                clean_train_file_path_02 = f"./data/agnews{target}/ag_news_without_ccn_sample20_label:t{target}to{replace}.csv"
+                clean_train_file_path_02 = f"./data/agnews_{data_size}{target}/ag_news_without_ccn_sample20_label:t{target}to{replace}.csv"
                 # Rep 0.2
                 model_save_path_rep_02='./save_model/CCN-selfmix_agnews_Rep_0.2.pt'
                 # GMM 0.2
                 model_save_path_GMM02 = "./save_model/CCN-selfmix_agnews_GMM_0.2.pt"
                 
                 #0.3
-                train_file_path_03= f"./data/agnews{target}/ag_news_ccn_sample30_label:t{target}to{replace}.csv"
+                train_file_path_03= f"./data/agnews_{data_size}{target}/ag_news_ccn_sample30_label:t{target}to{replace}.csv"
                 noised_rate_03= 0.3
-                clean_train_file_path_03 = f"./data/agnews{target}/ag_news_without_ccn_sample30_label:t{target}to{replace}.csv"
+                clean_train_file_path_03 = f"./data/agnews_{data_size}{target}/ag_news_without_ccn_sample30_label:t{target}to{replace}.csv"
                 # Rep 0.3
                 model_save_path_rep_03='./save_model/CCN-selfmix_agnews_Rep_0.3.pt'
                 # GMM 0.3  
@@ -96,8 +96,8 @@ for target in range(4):
                 
                 #0.4
                 noise_rate_04=0.4
-                train_file_path_04=f'./data/agnews{target}/ag_news_ccn_sample40_label:t{target}to{replace}.csv'
-                clean_train_file_path_04 = f"./data/agnews{target}/ag_news_without_ccn_sample40_label:t{target}to{replace}.csv"
+                train_file_path_04=f'./data/agnews_{data_size}{target}/ag_news_ccn_sample40_label:t{target}to{replace}.csv'
+                clean_train_file_path_04 = f"./data/agnews_{data_size}{target}/ag_news_without_ccn_sample40_label:t{target}to{replace}.csv"
                 # rep0.4
                 model_save_path_rep_04='./save_model/CCN-selfmix_agnews_Rep_0.4.pt'
                 # GMM 0.4
@@ -118,7 +118,7 @@ for target in range(4):
                 os.system(train_comand_GMM02)
             else:
                 noise_rate_0 = 0.0
-                train_file_path_02= "./data/agnews/ag_news_train_clean_sample.csv"
+                train_file_path_02= "./data/agnews_{data_size}/ag_news_train_clean_sample.csv"
                 noised_rate_02= 0.0
                 # Rep 0.0
                 model_save_path_rep_clean='./save_model/clean-selfmix_agnews_Rep_0.pt'
@@ -178,14 +178,14 @@ for target in range(4):
                 # print(gmm_train)
                 # rep_train = list_rep_train_comand[i]
                 # rep_eval = list_rep_eval_comand[i]
-                # os.system(gmm_train)
-                # os.system(gmm_eval)
+                os.system(gmm_train)
+                os.system(gmm_eval)
                 # # os.system(rep_train)
                 # # os.system(rep_eval)
                 
-                base_train = list_base_comand[i]
+                # base_train = list_base_comand[i]
                 
-                os.system(base_train)
+                # os.system(base_train)
 
  
 
